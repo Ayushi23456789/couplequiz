@@ -4,21 +4,57 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Couple Compatibility ❤️</title>
+
 <style>
-body{font-family:Arial;background:#ffe6ef;margin:0;padding:20px;color:#333}
-.box{max-width:550px;margin:30px auto;background:white;padding:25px;
-border-radius:20px;text-align:center;box-shadow:0 5px 20px #bbb}
+body{
+font-family:Arial;
+background:#ffe6ef;
+margin:0;
+padding:20px;
+color:#333
+}
+.box{
+max-width:550px;
+margin:30px auto;
+background:white;
+padding:25px;
+border-radius:20px;
+text-align:center;
+box-shadow:0 5px 20px #bbb
+}
 h1,h2{color:#e91e63}
-input,button{width:100%;padding:13px;margin:7px 0;border-radius:10px;
-box-sizing:border-box;font-size:16px}
+input,button{
+width:100%;
+padding:13px;
+margin:7px 0;
+border-radius:10px;
+box-sizing:border-box;
+font-size:16px
+}
 input{border:1px solid #ccc}
-button{border:0;background:#e91e63;color:white;font-weight:bold}
-button:hover{background:#c2185b}
-.option{background:#fff0f5;color:#333;border:2px solid #ffd0df}
-.selected{background:#e91e63;color:white}
-.code{font-size:40px;font-weight:bold;color:#e91e63;letter-spacing:7px}
+button{
+border:0;
+background:#e91e63;
+color:white;
+font-weight:bold
+}
+.option{
+background:#fff0f5;
+color:#333;
+border:2px solid #ffd0df
+}
+.selected{
+background:#e91e63;
+color:white
+}
 .hide{display:none}
-#msg{color:#d32f2f;margin:10px}
+.code{
+font-size:40px;
+font-weight:bold;
+color:#e91e63;
+letter-spacing:7px
+}
+#msg{color:#d32f2f}
 </style>
 </head>
 
@@ -38,13 +74,13 @@ button:hover{background:#c2185b}
 <button id="join">Join Quiz</button>
 </div>
 
-<div id="msg"></div>
+<p id="msg"></p>
 </div>
 
 
 <div class="box hide" id="wait">
 <h2>Waiting for Partner ❤️</h2>
-<p>Share this code with your partner:</p>
+<p>Share this code:</p>
 <div class="code" id="roomCode"></div>
 <p>Ask your partner to join using this code.</p>
 </div>
@@ -60,7 +96,7 @@ button:hover{background:#c2185b}
 
 <div class="box hide" id="submitted">
 <h2>Answers Submitted ❤️</h2>
-<p>Waiting for your partner to finish...</p>
+<p>Waiting for your partner...</p>
 </div>
 
 
@@ -74,33 +110,18 @@ button:hover{background:#c2185b}
 
 <script type="module">
 
-import{initializeApp}from
-"https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
-
-import{
-getFirestore,doc,setDoc,getDoc,updateDoc,onSnapshot
-}from
-"https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
-
-import{
-getAuth,signInAnonymously
-}from
-"https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+import{createClient}from
+"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
 
 
-const firebaseConfig={
-apiKey:"AIzaSyCrvmJseUq285ewvkc2pLCE2f1ftmgSFWI",
-authDomain:"couple-quiz-9c59b.firebaseapp.com",
-projectId:"couple-quiz-9c59b",
-storageBucket:"couple-quiz-9c59b.firebasestorage.app",
-messagingSenderId:"44788801949",
-appId:"1:44788801949:web:c27a90bee7f5507a7e8f74"
-};
+const SUPABASE_URL=
+"https://bimdpbfxcaepellxsdqr.supabase.co";
 
-const app=initializeApp(firebaseConfig);
-const db=getFirestore(app);
-const auth=getAuth(app);
-await signInAnonymously(auth);
+const SUPABASE_KEY=
+"sb_publishable_xeZUWMYm52mBYkVJARyg1w_tpkgP5QS";
+
+const supabase=
+createClient(SUPABASE_URL,SUPABASE_KEY);
 
 
 const questions=[
@@ -111,7 +132,7 @@ const questions=[
 "What is your partner's favorite food?",
 "Who gets jealous more easily?",
 "What is your partner's favorite color?",
-"Who is more likely to plan a surprise?",
+"Who plans surprises?",
 "Where would your partner love to travel?",
 "Who is more stubborn?",
 "What is your partner's favorite movie genre?",
@@ -171,24 +192,29 @@ let room="";
 let creator=false;
 let q=0;
 let answers={};
+let timer;
 
 
-const $=id=>document.getElementById(id);
+const $=x=>document.getElementById(x);
+
 
 function page(id){
-document.querySelectorAll(".box").forEach(x=>x.classList.add("hide"));
+document.querySelectorAll(".box")
+.forEach(x=>x.classList.add("hide"));
 $(id).classList.remove("hide");
+}
+
+
+function code(){
+return Math.floor(
+100000+Math.random()*900000
+).toString();
 }
 
 
 $("showJoin").onclick=()=>{
 $("joinBox").classList.toggle("hide");
 };
-
-
-function newCode(){
-return Math.floor(100000+Math.random()*900000).toString();
-}
 
 
 $("create").onclick=async()=>{
@@ -200,30 +226,28 @@ $("msg").textContent="Please enter your name.";
 return;
 }
 
+room=code();
 creator=true;
-room=newCode();
 
-try{
-
-await setDoc(doc(db,"coupleRooms",room),{
-creator:{
-name:name,
-uid:auth.currentUser.uid,
-answers:{},
-submitted:false
-},
-partner:null
+let{error}=await supabase
+.from("rooms")
+.insert({
+code:room,
+creator_name:name,
+creator_answers:{},
+partner_name:null,
+partner_answers:null
 });
+
+if(error){
+$("msg").textContent=error.message;
+return;
+}
 
 $("roomCode").textContent=room;
 page("wait");
-listen();
 
-}catch(e){
-
-$("msg").textContent=e.message;
-
-}
+watch();
 
 };
 
@@ -233,68 +257,89 @@ $("join").onclick=async()=>{
 name=$("name").value.trim();
 room=$("code").value.trim();
 
-if(!name||room.length!==6){
-$("msg").textContent="Enter your name and 6-digit code.";
+if(!name||room.length!=6){
+$("msg").textContent=
+"Enter your name and 6-digit code.";
 return;
 }
 
-try{
+let{data,error}=await supabase
+.from("rooms")
+.select("*")
+.eq("code",room)
+.single();
 
-let ref=doc(db,"coupleRooms",room);
-let snap=await getDoc(ref);
-
-if(!snap.exists()){
+if(error||!data){
 $("msg").textContent="Code not found.";
 return;
 }
 
-if(snap.data().partner){
-$("msg").textContent="This quiz already has two players.";
+if(data.partner_name){
+$("msg").textContent=
+"This quiz already has two players.";
 return;
 }
 
-await updateDoc(ref,{
-partner:{
-name:name,
-uid:auth.currentUser.uid,
-answers:{},
-submitted:false
+let result=await supabase
+.from("rooms")
+.update({
+partner_name:name,
+partner_answers:{}
+})
+.eq("code",room);
+
+if(result.error){
+$("msg").textContent=result.error.message;
+return;
 }
-});
 
 creator=false;
-listen();
 start();
-
-}catch(e){
-
-$("msg").textContent=e.message;
-
-}
+watch();
 
 };
 
 
-function listen(){
+function watch(){
 
-onSnapshot(doc(db,"coupleRooms",room),snap=>{
+clearInterval(timer);
 
-if(!snap.exists())return;
+timer=setInterval(async()=>{
 
-let d=snap.data();
+let{data,error}=await supabase
+.from("rooms")
+.select("*")
+.eq("code",room)
+.single();
 
-if(creator&&d.partner&&!$("quiz").classList.contains("hide"))
-return;
+if(error||!data)return;
 
-if(creator&&d.partner){
+
+/* Creator waits for partner */
+
+if(creator&&data.partner_name&&
+!$("quiz").classList.contains("hide")===false){
+
 start();
+
 }
 
-if(d.creator?.submitted&&d.partner?.submitted){
-result(d);
+
+/* Both players finished */
+
+if(data.creator_answers&&
+data.partner_answers){
+
+if(Object.keys(data.creator_answers).length>=50&&
+Object.keys(data.partner_answers).length>=50){
+
+showResult(data);
+
 }
 
-});
+}
+
+},2000);
 
 }
 
@@ -322,7 +367,8 @@ let b=document.createElement("button");
 b.textContent=c;
 b.className="option";
 
-if(answers[q]===c)b.classList.add("selected");
+if(answers[q]===c)
+b.classList.add("selected");
 
 b.onclick=()=>{
 
@@ -340,7 +386,7 @@ $("options").appendChild(b);
 });
 
 $("next").textContent=
-q===49?"Submit ❤️":"Next";
+q==49?"Submit ❤️":"Next";
 
 }
 
@@ -353,61 +399,82 @@ return;
 }
 
 if(q<49){
-
 q++;
 showQuestion();
 return;
-
 }
 
-let field=creator?"creator":"partner";
+let update={};
 
-await updateDoc(doc(db,"coupleRooms",room),{
-[field+".answers"]:answers,
-[field+".submitted"]:true
-});
+if(creator)
+update.creator_answers=answers;
+else
+update.partner_answers=answers;
+
+let{error}=await supabase
+.from("rooms")
+.update(update)
+.eq("code",room);
+
+if(error){
+alert(error.message);
+return;
+}
 
 page("submitted");
 
 };
 
 
-function result(d){
+function showResult(data){
 
-let a=creator?d.creator:d.partner;
-let b=creator?d.partner:d.creator;
+clearInterval(timer);
+
+let mine=creator?
+data.creator_answers:
+data.partner_answers;
+
+let partner=creator?
+data.partner_answers:
+data.creator_answers;
 
 let match=0;
 
 for(let i=0;i<50;i++){
 
-if(a.answers[i]===b.answers[i])match++;
+if(mine[i]===partner[i])
+match++;
 
 }
 
-let score=Math.round(match/50*100);
+let percent=Math.round(match/50*100);
 
-$("score").textContent=score;
+$("score").textContent=percent;
 
-if(score>=90){
+if(percent>=90){
+
 $("title").textContent="Perfect Match! 💕";
 $("resultText").textContent=
 "You two understand each other amazingly well!";
-}
-else if(score>=75){
+
+}else if(percent>=75){
+
 $("title").textContent="Amazing Couple! ❤️";
 $("resultText").textContent=
 "You know each other really well!";
-}
-else if(score>=50){
+
+}else if(percent>=50){
+
 $("title").textContent="Great Connection! 💗";
 $("resultText").textContent=
 "You have a beautiful connection!";
-}
-else{
+
+}else{
+
 $("title").textContent="More Discoveries Ahead! 😊";
 $("resultText").textContent=
 "Keep learning more about each other!";
+
 }
 
 page("result");

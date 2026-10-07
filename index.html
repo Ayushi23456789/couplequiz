@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -7,12 +7,13 @@
 
 <style>
 body{
-font-family:Arial;
+font-family:Arial,sans-serif;
 background:#ffe6ef;
 margin:0;
 padding:20px;
-color:#333
+color:#333;
 }
+
 .box{
 max-width:550px;
 margin:30px auto;
@@ -20,318 +21,658 @@ background:white;
 padding:25px;
 border-radius:20px;
 text-align:center;
-box-shadow:0 5px 20px #bbb
+box-shadow:0 5px 20px #bbb;
 }
-h1,h2{color:#e91e63}
+
+h1,h2{
+color:#e91e63;
+}
+
 input,button{
 width:100%;
 padding:13px;
 margin:7px 0;
 border-radius:10px;
 box-sizing:border-box;
-font-size:16px
+font-size:16px;
 }
-input{border:1px solid #ccc}
+
+input{
+border:1px solid #ccc;
+}
+
 button{
 border:0;
 background:#e91e63;
 color:white;
-font-weight:bold
+font-weight:bold;
+cursor:pointer;
 }
+
 .option{
 background:#fff0f5;
 color:#333;
-border:2px solid #ffd0df
+border:2px solid #ffd0df;
 }
+
 .selected{
 background:#e91e63;
-color:white
+color:white;
 }
-.hide{display:none}
+
+.hide{
+display:none;
+}
+
 .code{
 font-size:40px;
 font-weight:bold;
 color:#e91e63;
-letter-spacing:7px
+letter-spacing:7px;
 }
-#msg{color:#d32f2f}
+
+#msg{
+color:#d32f2f;
+font-weight:bold;
+word-break:break-word;
+}
+
+#success{
+color:#2e7d32;
+font-weight:bold;
+}
 </style>
 </head>
 
 <body>
 
+<!-- HOME -->
+
 <div class="box" id="home">
+
 <h1>Couple Compatibility ❤️</h1>
+
 <p>Find out how well you know each other!</p>
 
 <input id="name" placeholder="Enter your name">
 
-<button id="create">Create New Couple Quiz</button>
-<button id="showJoin">Join Existing Quiz</button>
+<button id="create">
+Create New Couple Quiz
+</button>
+
+<button id="showJoin">
+Join Existing Quiz
+</button>
 
 <div id="joinBox" class="hide">
-<input id="code" maxlength="6" placeholder="Enter 6-digit code">
-<button id="join">Join Quiz</button>
+
+<input
+id="code"
+maxlength="6"
+inputmode="numeric"
+placeholder="Enter 6-digit code">
+
+<button id="join">
+Join Quiz
+</button>
+
 </div>
 
 <p id="msg"></p>
+
+<p id="success"></p>
+
 </div>
 
+
+<!-- WAITING -->
 
 <div class="box hide" id="wait">
+
 <h2>Waiting for Partner ❤️</h2>
-<p>Share this code:</p>
+
+<p>Share this code with your partner:</p>
+
 <div class="code" id="roomCode"></div>
-<p>Ask your partner to join using this code.</p>
+
+<p>
+Ask your partner to open the website and enter this code.
+</p>
+
+<p id="waitStatus">
+Waiting for partner...
+</p>
+
 </div>
 
+
+<!-- QUIZ -->
 
 <div class="box hide" id="quiz">
-<p>Question <span id="num"></span> / 50</p>
+
+<p>
+Question <span id="num"></span> / 50
+</p>
+
 <h2 id="question"></h2>
+
 <div id="options"></div>
-<button id="next">Next</button>
+
+<button id="next">
+Next
+</button>
+
 </div>
 
+
+<!-- SUBMITTED -->
 
 <div class="box hide" id="submitted">
+
 <h2>Answers Submitted ❤️</h2>
-<p>Waiting for your partner...</p>
+
+<p>
+Your answers have been saved.
+</p>
+
+<p>
+Waiting for your partner...
+</p>
+
 </div>
 
+
+<!-- RESULT -->
 
 <div class="box hide" id="result">
+
 <h1>Your Result ❤️</h1>
-<h2><span id="score"></span>% Match</h2>
+
+<h2>
+<span id="score"></span>% Match
+</h2>
+
 <h2 id="title"></h2>
+
 <p id="resultText"></p>
+
 </div>
 
 
-<script type="module">
+<!-- SUPABASE -->
 
-import{createClient}from
-"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
-const SUPABASE_URL=
+<script>
+
+/* =========================
+   SUPABASE CONNECTION
+========================= */
+
+const SUPABASE_URL =
 "https://bimdpbfxcaepellxsdqr.supabase.co";
 
-const SUPABASE_KEY=
+const SUPABASE_KEY =
 "sb_publishable_xeZUWMYm52mBYkVJARyg1w_tpkgP5QS";
 
-const supabase=
-createClient(SUPABASE_URL,SUPABASE_KEY);
+const supabase =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
+);
 
 
-const questions=[
+/* =========================
+   QUESTIONS
+========================= */
+
+const questions = [
+
 "What is your ideal date?",
+
 "Who is more likely to say sorry first?",
+
 "What is your partner's biggest dream?",
+
 "Who is more romantic?",
+
 "What is your partner's favorite food?",
+
 "Who gets jealous more easily?",
+
 "What is your partner's favorite color?",
+
 "Who plans surprises?",
+
 "Where would your partner love to travel?",
+
 "Who is more stubborn?",
+
 "What is your partner's favorite movie genre?",
+
 "Who spends more money?",
+
 "What makes your partner happiest?",
+
 "Who falls asleep first?",
+
 "What is your partner's dream job?",
+
 "Who is more emotional?",
+
 "What is your partner's favorite season?",
+
 "Who starts arguments more often?",
+
 "What is your partner's biggest fear?",
+
 "Who is better at keeping secrets?",
+
 "Beach or mountains?",
+
 "Who is more adventurous?",
+
 "What is your partner's favorite drink?",
+
 "Who is more likely to be late?",
+
 "What is your partner's love language?",
+
 "Who makes the first move?",
+
 "What is your partner's favorite music?",
+
 "Who is more protective?",
+
 "What is your partner's biggest weakness?",
+
 "Who makes better decisions?",
+
 "Where would your partner want to live?",
+
 "Who is more talkative?",
+
 "What is your partner's favorite dessert?",
+
 "Who cries during movies?",
+
 "What is your partner's dream car?",
+
 "Who is more organized?",
+
 "What is your partner's favorite holiday?",
+
 "Who forgives quickly?",
+
 "What does your partner value most?",
+
 "Who is more playful?",
+
 "What is your partner's biggest goal?",
+
 "Who wakes up earlier?",
+
 "What is your partner's favorite activity?",
+
 "Who is more competitive?",
+
 "What makes your partner angry?",
+
 "Who initiates hugs?",
+
 "What is your partner's perfect weekend?",
+
 "Who is more confident?",
+
 "What does your partner love most about you?",
+
 "Love or money?"
+
 ];
 
 
-const choices=[
+const choices = [
+
 "Strongly Agree",
+
 "Agree",
+
 "Neutral",
+
 "Disagree",
+
 "Strongly Disagree"
+
 ];
 
 
-let name="";
-let room="";
-let creator=false;
-let q=0;
-let answers={};
-let timer;
+/* =========================
+   VARIABLES
+========================= */
+
+let name = "";
+
+let room = "";
+
+let creator = false;
+
+let q = 0;
+
+let answers = {};
+
+let timer = null;
 
 
-const $=x=>document.getElementById(x);
+/* =========================
+   SHORT FUNCTION
+========================= */
 
+const $ = id =>
+document.getElementById(id);
+
+
+/* =========================
+   PAGE CHANGE
+========================= */
 
 function page(id){
-document.querySelectorAll(".box")
-.forEach(x=>x.classList.add("hide"));
+
+document
+.querySelectorAll(".box")
+.forEach(box =>
+box.classList.add("hide")
+);
+
 $(id).classList.remove("hide");
+
 }
 
 
-function code(){
+/* =========================
+   CREATE 6 DIGIT CODE
+========================= */
+
+function makeCode(){
+
 return Math.floor(
-100000+Math.random()*900000
+100000 + Math.random() * 900000
 ).toString();
+
 }
 
 
-$("showJoin").onclick=()=>{
+/* =========================
+   JOIN BOX
+========================= */
+
+$("showJoin").onclick = function(){
+
 $("joinBox").classList.toggle("hide");
+
+$("msg").textContent = "";
+
 };
 
 
-$("create").onclick=async()=>{
+/* =========================
+   CREATE QUIZ
+========================= */
 
-name=$("name").value.trim();
+$("create").onclick = async function(){
+
+$("msg").textContent = "";
+
+$("success").textContent = "";
+
+name = $("name").value.trim();
 
 if(!name){
-$("msg").textContent="Please enter your name.";
+
+$("msg").textContent =
+"Please enter your name.";
+
 return;
+
 }
 
-room=code();
-creator=true;
 
-let{error}=await supabase
+room = makeCode();
+
+creator = true;
+
+
+const { data, error } = await supabase
+
 .from("rooms")
+
 .insert({
-code:room,
-creator_name:name,
-creator_answers:{},
-partner_name:null,
-partner_answers:null
-});
+
+code: room,
+
+creator_name: name,
+
+creator_answers: {},
+
+partner_name: null,
+
+partner_answers: null
+
+})
+
+.select();
+
 
 if(error){
-$("msg").textContent=error.message;
+
+$("msg").textContent =
+"Supabase Error: " + error.message;
+
 return;
+
 }
 
-$("roomCode").textContent=room;
+
+$("roomCode").textContent = room;
+
+$("waitStatus").textContent =
+"Waiting for your partner to join...";
+
 page("wait");
 
-watch();
+watchRoom();
 
 };
 
 
-$("join").onclick=async()=>{
+/* =========================
+   JOIN QUIZ
+========================= */
 
-name=$("name").value.trim();
-room=$("code").value.trim();
+$("join").onclick = async function(){
 
-if(!name||room.length!=6){
-$("msg").textContent=
-"Enter your name and 6-digit code.";
+$("msg").textContent = "";
+
+name = $("name").value.trim();
+
+room = $("code").value.trim();
+
+
+if(!name){
+
+$("msg").textContent =
+"Please enter your name.";
+
 return;
+
 }
 
-let{data,error}=await supabase
+
+if(room.length !== 6){
+
+$("msg").textContent =
+"Please enter the 6-digit code.";
+
+return;
+
+}
+
+
+const { data, error } = await supabase
+
 .from("rooms")
-.select("*")
-.eq("code",room)
-.single();
 
-if(error||!data){
-$("msg").textContent="Code not found.";
+.select("*")
+
+.eq("code", room)
+
+.maybeSingle();
+
+
+if(error){
+
+$("msg").textContent =
+"Supabase Error: " + error.message;
+
 return;
+
 }
+
+
+if(!data){
+
+$("msg").textContent =
+"Code not found. Please check the code.";
+
+return;
+
+}
+
 
 if(data.partner_name){
-$("msg").textContent=
+
+$("msg").textContent =
 "This quiz already has two players.";
+
 return;
+
 }
 
-let result=await supabase
+
+/* Add partner */
+
+const result = await supabase
+
 .from("rooms")
+
 .update({
-partner_name:name,
-partner_answers:{}
+
+partner_name: name,
+
+partner_answers: {}
+
 })
-.eq("code",room);
+
+.eq("code", room);
+
 
 if(result.error){
-$("msg").textContent=result.error.message;
+
+$("msg").textContent =
+"Supabase Error: " +
+result.error.message;
+
 return;
+
 }
 
-creator=false;
-start();
-watch();
+
+creator = false;
+
+startQuiz();
+
+watchRoom();
 
 };
 
 
-function watch(){
+/* =========================
+   WATCH ROOM
+========================= */
+
+function watchRoom(){
 
 clearInterval(timer);
 
-timer=setInterval(async()=>{
 
-let{data,error}=await supabase
+timer = setInterval(
+async function(){
+
+const { data, error } = await supabase
+
 .from("rooms")
+
 .select("*")
-.eq("code",room)
-.single();
 
-if(error||!data)return;
+.eq("code", room)
+
+.maybeSingle();
 
 
-/* Creator waits for partner */
+if(error){
 
-if(creator&&data.partner_name&&
-!$("quiz").classList.contains("hide")===false){
-
-start();
+return;
 
 }
 
 
-/* Both players finished */
+if(!data){
 
-if(data.creator_answers&&
-data.partner_answers){
+return;
 
-if(Object.keys(data.creator_answers).length>=50&&
-Object.keys(data.partner_answers).length>=50){
+}
+
+
+/* Creator sees partner */
+
+if(
+creator &&
+data.partner_name &&
+$("wait").classList.contains("hide") === false
+){
+
+$("waitStatus").textContent =
+"Your partner joined! Starting quiz...";
+
+setTimeout(function(){
+
+startQuiz();
+
+},800);
+
+return;
+
+}
+
+
+/* Check both answers */
+
+if(
+data.creator_answers &&
+data.partner_answers
+){
+
+const creatorCount =
+Object.keys(data.creator_answers).length;
+
+const partnerCount =
+Object.keys(data.partner_answers).length;
+
+
+if(
+creatorCount >= 50 &&
+partnerCount >= 50
+){
 
 showResult(data);
 
@@ -339,148 +680,274 @@ showResult(data);
 
 }
 
-},2000);
+},
+2000
+);
 
 }
 
 
-function start(){
+/* =========================
+   START QUIZ
+========================= */
+
+function startQuiz(){
+
+clearInterval(timer);
 
 page("quiz");
-q=0;
-answers={};
+
+q = 0;
+
+answers = {};
+
 showQuestion();
 
 }
 
+
+/* =========================
+   SHOW QUESTION
+========================= */
 
 function showQuestion(){
 
-$("num").textContent=q+1;
-$("question").textContent=questions[q];
-$("options").innerHTML="";
+$("num").textContent =
+q + 1;
 
-choices.forEach(c=>{
+$("question").textContent =
+questions[q];
 
-let b=document.createElement("button");
+$("options").innerHTML = "";
 
-b.textContent=c;
-b.className="option";
 
-if(answers[q]===c)
-b.classList.add("selected");
+choices.forEach(function(choice){
 
-b.onclick=()=>{
+const button =
+document.createElement("button");
 
-answers[q]=c;
+button.textContent = choice;
 
-document.querySelectorAll(".option")
-.forEach(x=>x.classList.remove("selected"));
+button.className = "option";
 
-b.classList.add("selected");
 
-};
+if(answers[q] === choice){
 
-$("options").appendChild(b);
+button.classList.add("selected");
+
+}
+
+
+button.onclick = function(){
+
+answers[q] = choice;
+
+
+document
+.querySelectorAll(".option")
+.forEach(function(btn){
+
+btn.classList.remove("selected");
 
 });
 
-$("next").textContent=
-q==49?"Submit ❤️":"Next";
 
-}
-
-
-$("next").onclick=async()=>{
-
-if(answers[q]===undefined){
-alert("Please select an answer.");
-return;
-}
-
-if(q<49){
-q++;
-showQuestion();
-return;
-}
-
-let update={};
-
-if(creator)
-update.creator_answers=answers;
-else
-update.partner_answers=answers;
-
-let{error}=await supabase
-.from("rooms")
-.update(update)
-.eq("code",room);
-
-if(error){
-alert(error.message);
-return;
-}
-
-page("submitted");
+button.classList.add("selected");
 
 };
 
+
+$("options").appendChild(button);
+
+});
+
+
+$("next").textContent =
+q === 49 ? "Submit ❤️" : "Next";
+
+}
+
+
+/* =========================
+   NEXT / SUBMIT
+========================= */
+
+$("next").onclick = async function(){
+
+if(answers[q] === undefined){
+
+alert("Please select an answer.");
+
+return;
+
+}
+
+
+/* Next question */
+
+if(q < 49){
+
+q++;
+
+showQuestion();
+
+return;
+
+}
+
+
+/* Save answers */
+
+let update = {};
+
+
+if(creator){
+
+update.creator_answers =
+answers;
+
+}else{
+
+update.partner_answers =
+answers;
+
+}
+
+
+const { error } = await supabase
+
+.from("rooms")
+
+.update(update)
+
+.eq("code", room);
+
+
+if(error){
+
+alert(
+"Could not save answers: " +
+error.message
+);
+
+return;
+
+}
+
+
+page("submitted");
+
+watchRoom();
+
+};
+
+
+/* =========================
+   SHOW RESULT
+========================= */
 
 function showResult(data){
 
 clearInterval(timer);
 
-let mine=creator?
-data.creator_answers:
-data.partner_answers;
 
-let partner=creator?
-data.partner_answers:
-data.creator_answers;
+let mine;
 
-let match=0;
+let partner;
 
-for(let i=0;i<50;i++){
 
-if(mine[i]===partner[i])
+if(creator){
+
+mine = data.creator_answers;
+
+partner = data.partner_answers;
+
+}else{
+
+mine = data.partner_answers;
+
+partner = data.creator_answers;
+
+}
+
+
+let match = 0;
+
+
+for(let i = 0; i < 50; i++){
+
+if(mine[i] === partner[i]){
+
 match++;
 
 }
 
-let percent=Math.round(match/50*100);
+}
 
-$("score").textContent=percent;
 
-if(percent>=90){
+const percent =
+Math.round((match / 50) * 100);
 
-$("title").textContent="Perfect Match! 💕";
-$("resultText").textContent=
+
+$("score").textContent =
+percent;
+
+
+if(percent >= 90){
+
+$("title").textContent =
+"Perfect Match! 💕";
+
+$("resultText").textContent =
 "You two understand each other amazingly well!";
 
-}else if(percent>=75){
+}
 
-$("title").textContent="Amazing Couple! ❤️";
-$("resultText").textContent=
+else if(percent >= 75){
+
+$("title").textContent =
+"Amazing Couple! ❤️";
+
+$("resultText").textContent =
 "You know each other really well!";
 
-}else if(percent>=50){
+}
 
-$("title").textContent="Great Connection! 💗";
-$("resultText").textContent=
+else if(percent >= 50){
+
+$("title").textContent =
+"Great Connection! 💗";
+
+$("resultText").textContent =
 "You have a beautiful connection!";
 
-}else{
+}
 
-$("title").textContent="More Discoveries Ahead! 😊";
-$("resultText").textContent=
+else{
+
+$("title").textContent =
+"More Discoveries Ahead! 😊";
+
+$("resultText").textContent =
 "Keep learning more about each other!";
 
 }
+
 
 page("result");
 
 }
 
+
+/* =========================
+   CONNECTION TEST
+========================= */
+
+console.log(
+"Couple Quiz Supabase connected"
+);
+
 </script>
+
 </body>
 </html>

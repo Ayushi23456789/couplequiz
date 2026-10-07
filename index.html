@@ -1,1178 +1,419 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Couple Compatibility ❤️</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #ff758c, #ff7eb3);
-      min-height: 100vh;
-      color: #333;
-    }
-
-    .container {
-      width: 92%;
-      max-width: 600px;
-      margin: auto;
-      padding: 25px 0;
-    }
-
-    .card {
-      background: white;
-      border-radius: 20px;
-      padding: 25px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-      margin-top: 20px;
-    }
-
-    h1, h2 {
-      text-align: center;
-      color: #e91e63;
-    }
-
-    .heart {
-      text-align: center;
-      font-size: 55px;
-    }
-
-    input {
-      width: 100%;
-      padding: 14px;
-      margin: 10px 0;
-      border: 2px solid #eee;
-      border-radius: 10px;
-      font-size: 16px;
-      outline: none;
-    }
-
-    input:focus {
-      border-color: #ff4f81;
-    }
-
-    button {
-      width: 100%;
-      padding: 14px;
-      margin: 8px 0;
-      border: none;
-      border-radius: 10px;
-      background: #e91e63;
-      color: white;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #c2185b;
-    }
-
-    .secondary {
-      background: #ff8fab;
-    }
-
-    .room-code {
-      text-align: center;
-      font-size: 30px;
-      font-weight: bold;
-      letter-spacing: 5px;
-      color: #e91e63;
-      padding: 15px;
-      background: #fff0f5;
-      border-radius: 12px;
-      margin: 15px 0;
-    }
-
-    .question-number {
-      color: #e91e63;
-      font-weight: bold;
-      margin-bottom: 8px;
-    }
-
-    .question {
-      font-size: 20px;
-      font-weight: bold;
-      margin: 15px 0;
-      line-height: 1.4;
-    }
-
-    .option {
-      background: #fff5f8;
-      color: #444;
-      border: 2px solid #ffd1df;
-      text-align: left;
-      font-weight: normal;
-    }
-
-    .option:hover {
-      background: #ffe1eb;
-    }
-
-    .progress-container {
-      width: 100%;
-      height: 10px;
-      background: #eee;
-      border-radius: 10px;
-      overflow: hidden;
-      margin: 15px 0;
-    }
-
-    .progress {
-      height: 100%;
-      width: 0%;
-      background: #e91e63;
-      transition: width 0.3s;
-    }
-
-    .status {
-      text-align: center;
-      padding: 12px;
-      background: #fff0f5;
-      border-radius: 10px;
-      margin: 15px 0;
-      color: #d81b60;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    .score {
-      text-align: center;
-      font-size: 60px;
-      font-weight: bold;
-      color: #e91e63;
-      margin: 20px 0;
-    }
-
-    .result-message {
-      text-align: center;
-      font-size: 20px;
-      margin: 20px 0;
-    }
-
-    .match {
-      color: #2e7d32;
-      font-weight: bold;
-    }
-
-    .different {
-      color: #d32f2f;
-      font-weight: bold;
-    }
-
-    .small {
-      text-align: center;
-      color: #777;
-      font-size: 14px;
-    }
-
-    .error {
-      background: #ffebee;
-      color: #c62828;
-      padding: 12px;
-      border-radius: 10px;
-      margin: 10px 0;
-      text-align: center;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Couple Compatibility ❤️</title>
+<style>
+body{font-family:Arial;background:#ffe6ef;margin:0;padding:20px;color:#333}
+.box{max-width:550px;margin:30px auto;background:white;padding:25px;
+border-radius:20px;text-align:center;box-shadow:0 5px 20px #bbb}
+h1,h2{color:#e91e63}
+input,button{width:100%;padding:13px;margin:7px 0;border-radius:10px;
+box-sizing:border-box;font-size:16px}
+input{border:1px solid #ccc}
+button{border:0;background:#e91e63;color:white;font-weight:bold}
+button:hover{background:#c2185b}
+.option{background:#fff0f5;color:#333;border:2px solid #ffd0df}
+.selected{background:#e91e63;color:white}
+.code{font-size:40px;font-weight:bold;color:#e91e63;letter-spacing:7px}
+.hide{display:none}
+#msg{color:#d32f2f;margin:10px}
+</style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="box" id="home">
+<h1>Couple Compatibility ❤️</h1>
+<p>Find out how well you know each other!</p>
 
-  <!-- HOME -->
-  <div id="homePage" class="card">
-    <div class="heart">❤️</div>
+<input id="name" placeholder="Enter your name">
 
-    <h1>Couple Compatibility</h1>
+<button id="create">Create New Couple Quiz</button>
+<button id="showJoin">Join Existing Quiz</button>
 
-    <p class="small">
-      Answer 50 questions and discover how well you know each other!
-    </p>
+<div id="joinBox" class="hide">
+<input id="code" maxlength="6" placeholder="Enter 6-digit code">
+<button id="join">Join Quiz</button>
+</div>
 
-    <input
-      type="text"
-      id="nameInput"
-      placeholder="Enter your name"
-      maxlength="30"
-    >
-
-    <button onclick="createRoom()">
-      💕 Create New Couple Quiz
-    </button>
-
-    <hr>
-
-    <h3 style="text-align:center;">Have a Room Code?</h3>
-
-    <input
-      type="text"
-      id="roomInput"
-      placeholder="Enter 6-digit room code"
-      maxlength="6"
-    >
-
-    <button class="secondary" onclick="joinRoom()">
-      💌 Join Existing Quiz
-    </button>
-
-    <div id="homeError"></div>
-  </div>
+<div id="msg"></div>
+</div>
 
 
-  <!-- WAITING PAGE -->
-  <div id="waitingPage" class="card hidden">
-
-    <div class="heart">💑</div>
-
-    <h2>Waiting for Your Partner</h2>
-
-    <p style="text-align:center;">
-      Share this room code with your partner:
-    </p>
-
-    <div class="room-code" id="displayRoomCode">
-      ------
-    </div>
-
-    <button onclick="copyRoomCode()">
-      📋 Copy Room Code
-    </button>
-
-    <div class="status">
-      <span id="waitingStatus">
-        Waiting for partner to join...
-      </span>
-    </div>
-
-    <p class="small">
-      Keep this page open while your partner joins.
-    </p>
-
-  </div>
+<div class="box hide" id="wait">
+<h2>Waiting for Partner ❤️</h2>
+<p>Share this code with your partner:</p>
+<div class="code" id="roomCode"></div>
+<p>Ask your partner to join using this code.</p>
+</div>
 
 
-  <!-- QUIZ PAGE -->
-  <div id="quizPage" class="card hidden">
-
-    <h2>❤️ Couple Quiz</h2>
-
-    <div class="room-code" style="font-size:20px; letter-spacing:3px;">
-      Room: <span id="quizRoomCode"></span>
-    </div>
-
-    <div class="status" id="partnerStatus">
-      Partner is connected ❤️
-    </div>
-
-    <div class="progress-container">
-      <div class="progress" id="progressBar"></div>
-    </div>
-
-    <div class="question-number" id="questionNumber">
-      Question 1 of 50
-    </div>
-
-    <div class="question" id="questionText">
-      Question
-    </div>
-
-    <div id="optionsContainer"></div>
-
-  </div>
+<div class="box hide" id="quiz">
+<p>Question <span id="num"></span> / 50</p>
+<h2 id="question"></h2>
+<div id="options"></div>
+<button id="next">Next</button>
+</div>
 
 
-  <!-- SUBMITTED PAGE -->
-  <div id="submittedPage" class="card hidden">
-
-    <div class="heart">💕</div>
-
-    <h2>Your Answers Are Submitted!</h2>
-
-    <div class="status">
-      Waiting for your partner to finish...
-    </div>
-
-    <p class="small">
-      Your result will appear automatically when both of you finish the quiz.
-    </p>
-
-  </div>
+<div class="box hide" id="submitted">
+<h2>Answers Submitted ❤️</h2>
+<p>Waiting for your partner to finish...</p>
+</div>
 
 
-  <!-- RESULT PAGE -->
-  <div id="resultPage" class="card hidden">
-
-    <div class="heart">💖</div>
-
-    <h1>Your Result</h1>
-
-    <p style="text-align:center;">
-      <strong id="namesResult"></strong>
-    </p>
-
-    <div class="score" id="scoreResult">
-      0%
-    </div>
-
-    <div class="result-message" id="resultMessage">
-      Amazing!
-    </div>
-
-    <div class="status">
-      <strong>Matching Answers:</strong>
-      <span id="matchingCount"></span>
-    </div>
-
-    <div id="answerDetails"></div>
-
-    <button onclick="location.reload()">
-      🔄 Play Again
-    </button>
-
-  </div>
-
+<div class="box hide" id="result">
+<h1>Your Result ❤️</h1>
+<h2><span id="score"></span>% Match</h2>
+<h2 id="title"></h2>
+<p id="resultText"></p>
 </div>
 
 
 <script type="module">
 
-  import { initializeApp }
-    from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+import{initializeApp}from
+"https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+
+import{
+getFirestore,doc,setDoc,getDoc,updateDoc,onSnapshot
+}from
+"https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+import{
+getAuth,signInAnonymously
+}from
+"https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+
+
+const firebaseConfig={
+apiKey:"AIzaSyCrvmJseUq285ewvkc2pLCE2f1ftmgSFWI",
+authDomain:"couple-quiz-9c59b.firebaseapp.com",
+projectId:"couple-quiz-9c59b",
+storageBucket:"couple-quiz-9c59b.firebasestorage.app",
+messagingSenderId:"44788801949",
+appId:"1:44788801949:web:c27a90bee7f5507a7e8f74"
+};
+
+const app=initializeApp(firebaseConfig);
+const db=getFirestore(app);
+const auth=getAuth(app);
+await signInAnonymously(auth);
+
+
+const questions=[
+"What is your ideal date?",
+"Who is more likely to say sorry first?",
+"What is your partner's biggest dream?",
+"Who is more romantic?",
+"What is your partner's favorite food?",
+"Who gets jealous more easily?",
+"What is your partner's favorite color?",
+"Who is more likely to plan a surprise?",
+"Where would your partner love to travel?",
+"Who is more stubborn?",
+"What is your partner's favorite movie genre?",
+"Who spends more money?",
+"What makes your partner happiest?",
+"Who falls asleep first?",
+"What is your partner's dream job?",
+"Who is more emotional?",
+"What is your partner's favorite season?",
+"Who starts arguments more often?",
+"What is your partner's biggest fear?",
+"Who is better at keeping secrets?",
+"Beach or mountains?",
+"Who is more adventurous?",
+"What is your partner's favorite drink?",
+"Who is more likely to be late?",
+"What is your partner's love language?",
+"Who makes the first move?",
+"What is your partner's favorite music?",
+"Who is more protective?",
+"What is your partner's biggest weakness?",
+"Who makes better decisions?",
+"Where would your partner want to live?",
+"Who is more talkative?",
+"What is your partner's favorite dessert?",
+"Who cries during movies?",
+"What is your partner's dream car?",
+"Who is more organized?",
+"What is your partner's favorite holiday?",
+"Who forgives quickly?",
+"What does your partner value most?",
+"Who is more playful?",
+"What is your partner's biggest goal?",
+"Who wakes up earlier?",
+"What is your partner's favorite activity?",
+"Who is more competitive?",
+"What makes your partner angry?",
+"Who initiates hugs?",
+"What is your partner's perfect weekend?",
+"Who is more confident?",
+"What does your partner love most about you?",
+"Love or money?"
+];
+
+
+const choices=[
+"Strongly Agree",
+"Agree",
+"Neutral",
+"Disagree",
+"Strongly Disagree"
+];
+
+
+let name="";
+let room="";
+let creator=false;
+let q=0;
+let answers={};
+
+
+const $=id=>document.getElementById(id);
+
+function page(id){
+document.querySelectorAll(".box").forEach(x=>x.classList.add("hide"));
+$(id).classList.remove("hide");
+}
 
-  import {
-    getFirestore,
-    doc,
-    setDoc,
-    getDoc,
-    updateDoc,
-    onSnapshot
-  } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
 
-  import {
-    getAuth,
-    signInAnonymously
-  } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
+$("showJoin").onclick=()=>{
+$("joinBox").classList.toggle("hide");
+};
 
 
-  // ==============================
-  // FIREBASE CONFIG
-  // ==============================
+function newCode(){
+return Math.floor(100000+Math.random()*900000).toString();
+}
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyCrvmJseUq285ewvkc2pLCE2f1ftmgSFWI",
-    authDomain: "couple-quiz-9c59b.firebaseapp.com",
-    projectId: "couple-quiz-9c59b",
-    storageBucket: "couple-quiz-9c59b.firebasestorage.app",
-    messagingSenderId: "44788801949",
-    appId: "1:44788801949:web:c27a90bee7f5507a7e8f74"
-  };
 
+$("create").onclick=async()=>{
 
-  // ==============================
-  // FIREBASE START
-  // ==============================
+name=$("name").value.trim();
 
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const auth = getAuth(app);
+if(!name){
+$("msg").textContent="Please enter your name.";
+return;
+}
 
-  let currentUser = null;
+creator=true;
+room=newCode();
 
-  try {
-    const userCredential = await signInAnonymously(auth);
-    currentUser = userCredential.user;
-  } catch (error) {
-    console.error("Authentication error:", error);
-    showHomeError(
-      "Firebase authentication failed. Please check Anonymous Authentication."
-    );
-  }
+try{
 
+await setDoc(doc(db,"coupleRooms",room),{
+creator:{
+name:name,
+uid:auth.currentUser.uid,
+answers:{},
+submitted:false
+},
+partner:null
+});
 
-  // ==============================
-  // QUESTIONS
-  // ==============================
+$("roomCode").textContent=room;
+page("wait");
+listen();
 
-  const questions = [
+}catch(e){
 
-    "What is your ideal date?",
+$("msg").textContent=e.message;
 
-    "Who is more likely to say sorry first?",
+}
 
-    "What is your partner's biggest dream?",
+};
 
-    "Who is more romantic?",
 
-    "What is your partner's favorite food?",
+$("join").onclick=async()=>{
 
-    "Who gets jealous more easily?",
+name=$("name").value.trim();
+room=$("code").value.trim();
 
-    "What is your partner's favorite color?",
+if(!name||room.length!==6){
+$("msg").textContent="Enter your name and 6-digit code.";
+return;
+}
 
-    "Who is more likely to plan a surprise?",
+try{
 
-    "Where would your partner love to travel?",
+let ref=doc(db,"coupleRooms",room);
+let snap=await getDoc(ref);
 
-    "Who is more stubborn?",
+if(!snap.exists()){
+$("msg").textContent="Code not found.";
+return;
+}
 
-    "What is your partner's favorite movie genre?",
+if(snap.data().partner){
+$("msg").textContent="This quiz already has two players.";
+return;
+}
 
-    "Who spends more money?",
+await updateDoc(ref,{
+partner:{
+name:name,
+uid:auth.currentUser.uid,
+answers:{},
+submitted:false
+}
+});
 
-    "What makes your partner happiest?",
+creator=false;
+listen();
+start();
 
-    "Who is more likely to fall asleep first?",
+}catch(e){
 
-    "What is your partner's dream job?",
+$("msg").textContent=e.message;
 
-    "Who is more emotional?",
+}
 
-    "What is your partner's favorite season?",
+};
 
-    "Who is more likely to start an argument?",
 
-    "What is your partner's biggest fear?",
+function listen(){
 
-    "Who is better at keeping secrets?",
+onSnapshot(doc(db,"coupleRooms",room),snap=>{
 
-    "What would your partner choose: beach or mountains?",
+if(!snap.exists())return;
 
-    "Who is more adventurous?",
+let d=snap.data();
 
-    "What is your partner's favorite drink?",
+if(creator&&d.partner&&!$("quiz").classList.contains("hide"))
+return;
 
-    "Who is more likely to be late?",
+if(creator&&d.partner){
+start();
+}
 
-    "What is your partner's love language?",
+if(d.creator?.submitted&&d.partner?.submitted){
+result(d);
+}
 
-    "Who is more likely to make the first move?",
+});
 
-    "What is your partner's favorite type of music?",
+}
 
-    "Who is more protective?",
 
-    "What is your partner's biggest weakness?",
+function start(){
 
-    "Who is better at making decisions?",
+page("quiz");
+q=0;
+answers={};
+showQuestion();
 
-    "Where would your partner want to live?",
+}
 
-    "Who is more talkative?",
 
-    "What is your partner's favorite dessert?",
+function showQuestion(){
 
-    "Who is more likely to cry during a movie?",
+$("num").textContent=q+1;
+$("question").textContent=questions[q];
+$("options").innerHTML="";
 
-    "What is your partner's dream car?",
+choices.forEach(c=>{
 
-    "Who is more organized?",
+let b=document.createElement("button");
 
-    "What is your partner's favorite holiday?",
+b.textContent=c;
+b.className="option";
 
-    "Who is more likely to forgive quickly?",
+if(answers[q]===c)b.classList.add("selected");
 
-    "What does your partner value most in a relationship?",
+b.onclick=()=>{
 
-    "Who is more playful?",
+answers[q]=c;
 
-    "What is your partner's biggest goal?",
+document.querySelectorAll(".option")
+.forEach(x=>x.classList.remove("selected"));
 
-    "Who is more likely to wake up early?",
+b.classList.add("selected");
 
-    "What is your partner's favorite activity?",
+};
 
-    "Who is more competitive?",
+$("options").appendChild(b);
 
-    "What makes your partner angry?",
+});
 
-    "Who is more likely to initiate a hug?",
+$("next").textContent=
+q===49?"Submit ❤️":"Next";
 
-    "What is your partner's perfect weekend?",
+}
 
-    "Who is more confident?",
 
-    "What does your partner love most about you?",
+$("next").onclick=async()=>{
 
-    "Would your partner choose love or money?"
+if(answers[q]===undefined){
+alert("Please select an answer.");
+return;
+}
 
-  ];
+if(q<49){
 
+q++;
+showQuestion();
+return;
 
-  const options = [
-    "Strongly Agree",
-    "Agree",
-    "Neutral",
-    "Disagree",
-    "Strongly Disagree"
-  ];
+}
 
+let field=creator?"creator":"partner";
 
-  // ==============================
-  // VARIABLES
-  // ==============================
+await updateDoc(doc(db,"coupleRooms",room),{
+[field+".answers"]:answers,
+[field+".submitted"]:true
+});
 
-  let myName = "";
-  let roomCode = "";
-  let currentQuestion = 0;
-  let myAnswers = [];
-  let unsubscribeRoom = null;
+page("submitted");
 
+};
 
-  // ==============================
-  // PAGE FUNCTIONS
-  // ==============================
 
-  function hideAllPages() {
+function result(d){
 
-    document.getElementById("homePage")
-      .classList.add("hidden");
+let a=creator?d.creator:d.partner;
+let b=creator?d.partner:d.creator;
 
-    document.getElementById("waitingPage")
-      .classList.add("hidden");
+let match=0;
 
-    document.getElementById("quizPage")
-      .classList.add("hidden");
+for(let i=0;i<50;i++){
 
-    document.getElementById("submittedPage")
-      .classList.add("hidden");
+if(a.answers[i]===b.answers[i])match++;
 
-    document.getElementById("resultPage")
-      .classList.add("hidden");
-  }
+}
 
+let score=Math.round(match/50*100);
 
-  function showPage(id) {
+$("score").textContent=score;
 
-    hideAllPages();
+if(score>=90){
+$("title").textContent="Perfect Match! 💕";
+$("resultText").textContent=
+"You two understand each other amazingly well!";
+}
+else if(score>=75){
+$("title").textContent="Amazing Couple! ❤️";
+$("resultText").textContent=
+"You know each other really well!";
+}
+else if(score>=50){
+$("title").textContent="Great Connection! 💗";
+$("resultText").textContent=
+"You have a beautiful connection!";
+}
+else{
+$("title").textContent="More Discoveries Ahead! 😊";
+$("resultText").textContent=
+"Keep learning more about each other!";
+}
 
-    document.getElementById(id)
-      .classList.remove("hidden");
-  }
+page("result");
 
-
-  function showHomeError(message) {
-
-    document.getElementById("homeError").innerHTML =
-      `<div class="error">${message}</div>`;
-  }
-
-
-  // ==============================
-  // CREATE ROOM
-  // ==============================
-
-  window.createRoom = async function() {
-
-    const name =
-      document.getElementById("nameInput")
-        .value.trim();
-
-    if (!name) {
-      showHomeError("Please enter your name ❤️");
-      return;
-    }
-
-    if (!currentUser) {
-      showHomeError(
-        "Firebase is not connected. Please refresh the page."
-      );
-      return;
-    }
-
-    myName = name;
-
-    roomCode = generateRoomCode();
-
-    try {
-
-      const roomRef =
-        doc(db, "coupleRooms", roomCode);
-
-      const roomSnapshot =
-        await getDoc(roomRef);
-
-      if (roomSnapshot.exists()) {
-
-        roomCode = generateRoomCode();
-
-      }
-
-      await setDoc(roomRef, {
-
-        creator: {
-          name: myName,
-          uid: currentUser.uid,
-          answers: {},
-          submitted: false
-        },
-
-        partner: null,
-
-        createdAt: new Date().toISOString()
-
-      });
-
-
-      document.getElementById("displayRoomCode")
-        .textContent = roomCode;
-
-      showPage("waitingPage");
-
-      listenToRoom();
-
-    } catch (error) {
-
-      console.error(error);
-
-      showHomeError(
-        "Could not create room. Please try again."
-      );
-    }
-  };
-
-
-  // ==============================
-  // GENERATE ROOM CODE
-  // ==============================
-
-  function generateRoomCode() {
-
-    return Math.floor(
-      100000 + Math.random() * 900000
-    ).toString();
-
-  }
-
-
-  // ==============================
-  // JOIN ROOM
-  // ==============================
-
-  window.joinRoom = async function() {
-
-    const name =
-      document.getElementById("nameInput")
-        .value.trim();
-
-    const enteredCode =
-      document.getElementById("roomInput")
-        .value.trim();
-
-    if (!name) {
-      showHomeError("Please enter your name ❤️");
-      return;
-    }
-
-    if (!enteredCode || enteredCode.length !== 6) {
-      showHomeError("Please enter a valid 6-digit room code.");
-      return;
-    }
-
-    if (!currentUser) {
-      showHomeError(
-        "Firebase is not connected. Please refresh the page."
-      );
-      return;
-    }
-
-    myName = name;
-    roomCode = enteredCode;
-
-
-    try {
-
-      const roomRef =
-        doc(db, "coupleRooms", roomCode);
-
-      const roomSnapshot =
-        await getDoc(roomRef);
-
-
-      if (!roomSnapshot.exists()) {
-
-        showHomeError(
-          "Room not found. Please check the room code."
-        );
-
-        return;
-      }
-
-
-      const roomData =
-        roomSnapshot.data();
-
-
-      if (roomData.partner) {
-
-        showHomeError(
-          "This room already has two players."
-        );
-
-        return;
-      }
-
-
-      await updateDoc(roomRef, {
-
-        partner: {
-          name: myName,
-          uid: currentUser.uid,
-          answers: {},
-          submitted: false
-        }
-
-      });
-
-
-      document.getElementById("quizRoomCode")
-        .textContent = roomCode;
-
-      showPage("quizPage");
-
-      startQuiz();
-
-      listenToRoom();
-
-    } catch (error) {
-
-      console.error(error);
-
-      showHomeError(
-        "Could not join room. Please try again."
-      );
-    }
-  };
-
-
-  // ==============================
-  // COPY ROOM CODE
-  // ==============================
-
-  window.copyRoomCode = async function() {
-
-    try {
-
-      await navigator.clipboard.writeText(roomCode);
-
-      document.getElementById("waitingStatus")
-        .textContent =
-        "Room code copied! Send it to your partner ❤️";
-
-    } catch (error) {
-
-      alert("Room Code: " + roomCode);
-
-    }
-  };
-
-
-  // ==============================
-  // START QUIZ
-  // ==============================
-
-  function startQuiz() {
-
-    currentQuestion = 0;
-    myAnswers = [];
-
-    showQuestion();
-
-  }
-
-
-  // ==============================
-  // SHOW QUESTION
-  // ==============================
-
-  function showQuestion() {
-
-    if (currentQuestion >= questions.length) {
-
-      submitQuiz();
-
-      return;
-    }
-
-
-    document.getElementById("questionNumber")
-      .textContent =
-      `Question ${currentQuestion + 1} of ${questions.length}`;
-
-
-    document.getElementById("questionText")
-      .textContent =
-      questions[currentQuestion];
-
-
-    const progress =
-      ((currentQuestion) / questions.length) * 100;
-
-
-    document.getElementById("progressBar")
-      .style.width = progress + "%";
-
-
-    const container =
-      document.getElementById("optionsContainer");
-
-
-    container.innerHTML = "";
-
-
-    options.forEach((option, index) => {
-
-      const button =
-        document.createElement("button");
-
-      button.className = "option";
-
-      button.textContent = option;
-
-      button.onclick = function() {
-
-        selectAnswer(index);
-
-      };
-
-      container.appendChild(button);
-
-    });
-
-  }
-
-
-  // ==============================
-  // SELECT ANSWER
-  // ==============================
-
-  function selectAnswer(index) {
-
-    myAnswers[currentQuestion] = index;
-
-    currentQuestion++;
-
-    showQuestion();
-
-  }
-
-
-  // ==============================
-  // SUBMIT QUIZ
-  // ==============================
-
-  async function submitQuiz() {
-
-    try {
-
-      const roomRef =
-        doc(db, "coupleRooms", roomCode);
-
-      const roomSnapshot =
-        await getDoc(roomRef);
-
-
-      if (!roomSnapshot.exists()) {
-        alert("Room no longer exists.");
-        return;
-      }
-
-
-      const roomData =
-        roomSnapshot.data();
-
-
-      const playerData =
-        roomData.creator &&
-        roomData.creator.uid === currentUser.uid
-          ? "creator"
-          : "partner";
-
-
-      await updateDoc(roomRef, {
-
-        [`${playerData}.answers`]:
-          myAnswers,
-
-        [`${playerData}.submitted`]:
-          true
-
-      });
-
-
-      showPage("submittedPage");
-
-      listenToRoom();
-
-    } catch (error) {
-
-      console.error(error);
-
-      alert(
-        "There was a problem submitting your answers. Please try again."
-      );
-
-    }
-
-  }
-
-
-  // ==============================
-  // LISTEN TO ROOM
-  // ==============================
-
-  function listenToRoom() {
-
-    if (unsubscribeRoom) {
-      unsubscribeRoom();
-    }
-
-
-    const roomRef =
-      doc(db, "coupleRooms", roomCode);
-
-
-    unsubscribeRoom =
-      onSnapshot(roomRef, (snapshot) => {
-
-        if (!snapshot.exists()) {
-          return;
-        }
-
-
-        const data =
-          snapshot.data();
-
-
-        // Partner joined
-        if (
-          data.creator &&
-          data.partner &&
-          document.getElementById("waitingPage")
-            .classList.contains("hidden") === false
-        ) {
-
-          document.getElementById("waitingStatus")
-            .textContent =
-            "Your partner joined! Starting quiz ❤️";
-
-          setTimeout(() => {
-
-            document.getElementById("quizRoomCode")
-              .textContent = roomCode;
-
-            showPage("quizPage");
-
-            startQuiz();
-
-          }, 800);
-
-        }
-
-
-        // Update partner status
-        if (data.partner) {
-
-          document.getElementById("partnerStatus")
-            .textContent =
-            `${data.partner.name} is connected ❤️`;
-
-        }
-
-
-        // Both submitted
-        if (
-          data.creator &&
-          data.partner &&
-          data.creator.submitted === true &&
-          data.partner.submitted === true
-        ) {
-
-          showResults(
-            data.creator,
-            data.partner
-          );
-
-        }
-
-      });
-
-  }
-
-
-  // ==============================
-  // SHOW RESULTS
-  // ==============================
-
-  function showResults(creator, partner) {
-
-    let creatorAnswers =
-      creator.answers || [];
-
-    let partnerAnswers =
-      partner.answers || [];
-
-
-    let matching = 0;
-
-
-    for (
-      let i = 0;
-      i < questions.length;
-      i++
-    ) {
-
-      if (
-        creatorAnswers[i] !== undefined &&
-        partnerAnswers[i] !== undefined &&
-        creatorAnswers[i] === partnerAnswers[i]
-      ) {
-
-        matching++;
-
-      }
-
-    }
-
-
-    const percentage =
-      Math.round(
-        (matching / questions.length) * 100
-      );
-
-
-    document.getElementById("scoreResult")
-      .textContent =
-      percentage + "%";
-
-
-    document.getElementById("matchingCount")
-      .textContent =
-      ` ${matching} / ${questions.length}`;
-
-
-    document.getElementById("namesResult")
-      .textContent =
-      `${creator.name} ❤️ ${partner.name}`;
-
-
-    let message = "";
-
-
-    if (percentage >= 90) {
-
-      message =
-        "💖 Perfect Match! You two understand each other amazingly!";
-
-    } else if (percentage >= 75) {
-
-      message =
-        "💕 Excellent Match! You know each other very well!";
-
-    } else if (percentage >= 60) {
-
-      message =
-        "❤️ Great Match! You have a strong connection!";
-
-    } else if (percentage >= 40) {
-
-      message =
-        "😊 Good Match! There is still more to discover about each other.";
-
-    } else {
-
-      message =
-        "💗 Opposites attract! You have lots of fun things to discover together.";
-
-    }
-
-
-    document.getElementById("resultMessage")
-      .textContent = message;
-
-
-    const details =
-      document.getElementById("answerDetails");
-
-    details.innerHTML =
-      "<h3>Answer Comparison</h3>";
-
-
-    for (let i = 0; i < questions.length; i++) {
-
-      const creatorAnswer =
-        creatorAnswers[i] !== undefined
-          ? options[creatorAnswers[i]]
-          : "Not answered";
-
-      const partnerAnswer =
-        partnerAnswers[i] !== undefined
-          ? options[partnerAnswers[i]]
-          : "Not answered";
-
-      const isMatch =
-        creatorAnswers[i] === partnerAnswers[i];
-
-
-      const div =
-        document.createElement("div");
-
-      div.style.padding = "12px";
-      div.style.marginBottom = "10px";
-      div.style.borderRadius = "10px";
-
-      div.style.background =
-        isMatch ? "#e8f5e9" : "#ffebee";
-
-
-      div.innerHTML = `
-
-        <strong>
-          ${i + 1}. ${questions[i]}
-        </strong>
-
-        <br><br>
-
-        <span>
-          ${creator.name}: ${creatorAnswer}
-        </span>
-
-        <br>
-
-        <span>
-          ${partner.name}: ${partnerAnswer}
-        </span>
-
-        <br><br>
-
-        <span class="${isMatch ? "match" : "different"}">
-          ${isMatch ? "❤️ Match" : "❌ Different"}
-        </span>
-
-      `;
-
-      details.appendChild(div);
-    }
-
-    showPage("resultPage");
-
-  }
-
-
-  // ==============================
-  // END
-  // ==============================
+}
 
 </script>
-
 </body>
 </html>

@@ -2,952 +2,479 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Couple Compatibility ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Love Quiz ❤️</title>
 
 <style>
-body{
-font-family:Arial,sans-serif;
-background:#ffe6ef;
-margin:0;
-padding:20px;
-color:#333;
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #ffe0eb, #fff5f8);
+    color: #4a2432;
+    min-height: 100vh;
 }
-
-.box{
-max-width:550px;
-margin:30px auto;
-background:white;
-padding:25px;
-border-radius:20px;
-text-align:center;
-box-shadow:0 5px 20px #bbb;
+.container { width: 100%; max-width: 650px; margin: auto; padding: 20px; }
+.page { display: none; }
+.page.active { display: block; }
+.card {
+    background: white;
+    border-radius: 25px;
+    padding: 28px 22px;
+    box-shadow: 0 10px 35px rgba(150, 50, 90, 0.15);
+    margin-top: 20px;
 }
-
-h1,h2{
-color:#e91e63;
+.logo { text-align: center; font-size: 55px; margin-bottom: 8px; }
+h1 { text-align: center; color: #d6336c; font-size: 30px; margin-bottom: 10px; }
+.subtitle { text-align: center; color: #805566; line-height: 1.5; margin-bottom: 25px; }
+input {
+    width: 100%; padding: 15px; border: 2px solid #f2c4d3;
+    border-radius: 14px; font-size: 16px; outline: none; margin-bottom: 12px;
 }
-
-input,button{
-width:100%;
-padding:13px;
-margin:7px 0;
-border-radius:10px;
-box-sizing:border-box;
-font-size:16px;
+input:focus { border-color: #d6336c; }
+button {
+    width: 100%; padding: 15px; border: none; border-radius: 14px;
+    background: #d6336c; color: white; font-size: 16px; font-weight: bold;
+    cursor: pointer; margin-top: 8px;
 }
-
-input{
-border:1px solid #ccc;
+button:hover { background: #b92759; }
+button.secondary { background: #f7d6e2; color: #9d2852; }
+button:disabled { opacity: 0.6; cursor: not-allowed; }
+.divider { display: flex; align-items: center; gap: 10px; margin: 20px 0; color: #a77a89; }
+.divider::before, .divider::after { content: ""; height: 1px; background: #efd0db; flex: 1; }
+.error {
+    background: #ffe1e1; color: #b42318; padding: 12px; border-radius: 12px;
+    margin-top: 15px; display: none; line-height: 1.4;
 }
-
-button{
-border:0;
-background:#e91e63;
-color:white;
-font-weight:bold;
-cursor:pointer;
+.success { background: #e2f8eb; color: #237a45; padding: 12px; border-radius: 12px; margin-top: 15px; display: none; }
+.room-code {
+    background: #fff0f5; border: 2px dashed #e09ab5; border-radius: 18px;
+    padding: 20px; text-align: center; margin: 20px 0;
 }
-
-.option{
-background:#fff0f5;
-color:#333;
-border:2px solid #ffd0df;
+.room-code small { display: block; color: #8c6572; margin-bottom: 8px; }
+.room-number { font-size: 38px; font-weight: bold; letter-spacing: 8px; color: #d6336c; }
+.copy-button { margin-top: 15px; }
+.waiting-heart { font-size: 55px; text-align: center; animation: heartbeat 1.3s infinite; }
+@keyframes heartbeat { 0%,100% { transform: scale(1); } 50% { transform: scale(1.15); } }
+.waiting-text { text-align: center; line-height: 1.6; margin: 15px 0; }
+.progress-container { background: #f7dce5; height: 9px; border-radius: 20px; overflow: hidden; margin: 15px 0 25px; }
+.progress { height: 100%; background: #d6336c; width: 0%; transition: width 0.3s; }
+.quiz-top { display: flex; justify-content: space-between; align-items: center; color: #8a5265; font-size: 14px; }
+.partner-status { background: #fff1f5; padding: 10px 13px; border-radius: 12px; margin-bottom: 20px; text-align: center; font-size: 14px; }
+.question-number { color: #d6336c; font-weight: bold; font-size: 15px; margin-bottom: 10px; }
+.question { font-size: 22px; line-height: 1.4; font-weight: bold; color: #44222f; margin-bottom: 22px; }
+.option {
+    background: #fff8fa; color: #542b3a; border: 2px solid #f2d1dc;
+    border-radius: 15px; padding: 16px; margin: 10px 0; cursor: pointer;
+    transition: 0.2s; font-size: 15px; line-height: 1.4;
 }
-
-.selected{
-background:#e91e63;
-color:white;
+.option:hover { border-color: #d6336c; background: #fff0f5; }
+.option.selected { background: #d6336c; border-color: #d6336c; color: white; }
+.option.disabled { pointer-events: none; }
+.submitted-icon { text-align: center; font-size: 65px; margin-bottom: 10px; }
+.center { text-align: center; }
+.score-circle {
+    width: 170px; height: 170px; border-radius: 50%; border: 10px solid #f4bfd0;
+    margin: 20px auto; display: flex; flex-direction: column; align-items: center;
+    justify-content: center; background: #fff7fa;
 }
-
-.hide{
-display:none;
+.score-number { font-size: 42px; font-weight: bold; color: #d6336c; }
+.score-label { font-size: 13px; color: #896171; }
+.result-message { background: #fff0f5; padding: 18px; border-radius: 18px; line-height: 1.6; margin: 20px 0; text-align: center; }
+.names { text-align: center; font-size: 19px; font-weight: bold; color: #8d3151; margin: 15px 0; }
+.match-summary { text-align: center; margin: 15px 0; color: #714555; }
+.answer-detail { border: 1px solid #f0d3dd; border-radius: 15px; padding: 15px; margin: 12px 0; background: #fffafb; }
+.answer-detail.match { border-left: 5px solid #46a86b; }
+.answer-detail.no-match { border-left: 5px solid #d98a9e; }
+.answer-q { font-weight: bold; margin-bottom: 10px; line-height: 1.4; }
+.answer-row { font-size: 14px; line-height: 1.5; margin: 5px 0; }
+.match-label { font-weight: bold; margin-top: 8px; }
+.match-label.yes { color: #25814b; }
+.match-label.no { color: #b55a72; }
+.section-title { color: #d6336c; margin-top: 25px; margin-bottom: 12px; }
+.note { font-size: 12px; color: #92707c; text-align: center; margin-top: 18px; line-height: 1.5; }
+.loading { text-align: center; color: #8c596b; padding: 15px; }
+.spinner {
+    width: 35px; height: 35px; border: 4px solid #f4cbd8; border-top-color: #d6336c;
+    border-radius: 50%; animation: spin 0.8s linear infinite; margin: 15px auto;
 }
-
-.code{
-font-size:40px;
-font-weight:bold;
-color:#e91e63;
-letter-spacing:7px;
-}
-
-#msg{
-color:#d32f2f;
-font-weight:bold;
-word-break:break-word;
-}
-
-#success{
-color:#2e7d32;
-font-weight:bold;
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (max-width: 500px) {
+    .container { padding: 12px; }
+    .card { padding: 22px 16px; border-radius: 20px; }
+    h1 { font-size: 26px; }
+    .question { font-size: 20px; }
+    .room-number { font-size: 32px; }
 }
 </style>
 </head>
 
 <body>
+<div class="container">
 
-<!-- HOME -->
+<div id="homePage" class="page active">
+<div class="card">
+<div class="logo">💗</div>
+<h1>Our Love Quiz</h1>
+<p class="subtitle">A deep compatibility quiz for two hearts.<br>Answer honestly and discover how closely your hearts think alike. ❤️</p>
+<input type="text" id="nameInput" placeholder="Enter your name" maxlength="30">
+<button id="createBtn">💕 Create New Couple Quiz</button>
+<div class="divider">OR</div>
+<input type="text" id="roomInput" placeholder="Enter 6-digit room code" maxlength="6" inputmode="numeric">
+<button id="joinBtn">💞 Join Existing Quiz</button>
+<div id="homeError" class="error"></div>
+<p class="note">Both partners answer the same 50 questions separately. Your answers are compared only after both of you finish.</p>
+</div>
+</div>
 
-<div class="box" id="home">
+<div id="waitingPage" class="page">
+<div class="card">
+<div class="waiting-heart">💗</div>
+<h1>Waiting for Your Love</h1>
+<p class="waiting-text">Share this room code with your partner. Once they join, the quiz will begin automatically.</p>
+<div class="room-code">
+<small>Your Couple Room Code</small>
+<div id="displayRoomCode" class="room-number">------</div>
+<button id="copyBtn" class="copy-button">📋 Copy Room Code</button>
+</div>
+<div id="waitingStatus" class="loading"><div class="spinner"></div>Waiting for your partner to join...</div>
+<button id="backHomeBtn" class="secondary">← Back to Home</button>
+</div>
+</div>
 
-<h1>Couple Compatibility ❤️</h1>
+<div id="quizPage" class="page">
+<div class="card">
+<div class="quiz-top">
+<span id="quizRoom">Room: ------</span>
+<span id="progressText">1 / 50</span>
+</div>
+<div class="progress-container"><div id="progressBar" class="progress"></div></div>
+<div id="partnerStatus" class="partner-status">💕 Your partner is answering too...</div>
+<div id="questionNumber" class="question-number">Question 1 of 50</div>
+<div id="questionText" class="question">Loading question...</div>
+<div id="optionsContainer"></div>
+</div>
+</div>
 
-<p>Find out how well you know each other!</p>
+<div id="submittedPage" class="page">
+<div class="card center">
+<div class="submitted-icon">💌</div>
+<h1>Answers Submitted!</h1>
+<p class="waiting-text">Your answers are safely saved.<br><br>Now we're waiting for your partner to finish.<br> Your result will appear automatically. ❤️</p>
+<div class="loading"><div class="spinner"></div>Waiting for partner...</div>
+</div>
+</div>
 
-<input id="name" placeholder="Enter your name">
-
-<button id="create">
-Create New Couple Quiz
-</button>
-
-<button id="showJoin">
-Join Existing Quiz
-</button>
-
-<div id="joinBox" class="hide">
-
-<input
-id="code"
-maxlength="6"
-inputmode="numeric"
-placeholder="Enter 6-digit code">
-
-<button id="join">
-Join Quiz
-</button>
+<div id="resultPage" class="page">
+<div class="card">
+<div class="center">
+<div class="logo">💖</div>
+<h1>Your Love Match</h1>
+<div id="resultNames" class="names"></div>
+<div class="score-circle">
+<div id="scoreNumber" class="score-number">0%</div>
+<div class="score-label">Answer Match</div>
+</div>
+<div id="matchSummary" class="match-summary"></div>
+<div id="resultMessage" class="result-message"></div>
+</div>
+<h2 class="section-title">💕 Your Answer Comparison</h2>
+<div id="answerDetails"></div>
+<button id="playAgainBtn">💗 Play Again</button>
+</div>
+</div>
 
 </div>
 
-<p id="msg"></p>
+<script type="module">
 
-<p id="success"></p>
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+import {
+    getFirestore, doc, setDoc, getDoc, updateDoc, onSnapshot
+} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+import {
+    getAuth, signInAnonymously
+} from "https://www.gstatic.com/firebasejs/12.3.0/firebase-auth.js";
 
-</div>
+const firebaseConfig = {
+    apiKey: "AIzaSyCrvmJseUq285ewvkc2pLCE2f1ftmgSFWI",
+    authDomain: "couple-quiz-9c59b.firebaseapp.com",
+    projectId: "couple-quiz-9c59b",
+    storageBucket: "couple-quiz-9c59b.firebasestorage.app",
+    messagingSenderId: "44788801949",
+    appId: "1:44788801949:web:c27a90bee7f5507a7e8f74"
+};
 
-
-<!-- WAITING -->
-
-<div class="box hide" id="wait">
-
-<h2>Waiting for Partner ❤️</h2>
-
-<p>Share this code with your partner:</p>
-
-<div class="code" id="roomCode"></div>
-
-<p>
-Ask your partner to open the website and enter this code.
-</p>
-
-<p id="waitStatus">
-Waiting for partner...
-</p>
-
-</div>
-
-
-<!-- QUIZ -->
-
-<div class="box hide" id="quiz">
-
-<p>
-Question <span id="num"></span> / 50
-</p>
-
-<h2 id="question"></h2>
-
-<div id="options"></div>
-
-<button id="next">
-Next
-</button>
-
-</div>
-
-
-<!-- SUBMITTED -->
-
-<div class="box hide" id="submitted">
-
-<h2>Answers Submitted ❤️</h2>
-
-<p>
-Your answers have been saved.
-</p>
-
-<p>
-Waiting for your partner...
-</p>
-
-</div>
-
-
-<!-- RESULT -->
-
-<div class="box hide" id="result">
-
-<h1>Your Result ❤️</h1>
-
-<h2>
-<span id="score"></span>% Match
-</h2>
-
-<h2 id="title"></h2>
-
-<p id="resultText"></p>
-
-</div>
-
-
-<!-- SUPABASE -->
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-
-<script>
-
-/* =========================
-   SUPABASE CONNECTION
-========================= */
-
-const SUPABASE_URL =
-"https://bimdpbfxcaepellxsdqr.supabase.co";
-
-const SUPABASE_KEY =
-"sb_publishable_xeZUWMYm52mBYkVJARyg1w_tpkgP5QS";
-
-const supabase =
-window.supabase.createClient(
-SUPABASE_URL,
-SUPABASE_KEY
-);
-
-
-/* =========================
-   QUESTIONS
-========================= */
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
 
 const questions = [
-
-"What is your ideal date?",
-
-"Who is more likely to say sorry first?",
-
-"What is your partner's biggest dream?",
-
-"Who is more romantic?",
-
-"What is your partner's favorite food?",
-
-"Who gets jealous more easily?",
-
-"What is your partner's favorite color?",
-
-"Who plans surprises?",
-
-"Where would your partner love to travel?",
-
-"Who is more stubborn?",
-
-"What is your partner's favorite movie genre?",
-
-"Who spends more money?",
-
-"What makes your partner happiest?",
-
-"Who falls asleep first?",
-
-"What is your partner's dream job?",
-
-"Who is more emotional?",
-
-"What is your partner's favorite season?",
-
-"Who starts arguments more often?",
-
-"What is your partner's biggest fear?",
-
-"Who is better at keeping secrets?",
-
-"Beach or mountains?",
-
-"Who is more adventurous?",
-
-"What is your partner's favorite drink?",
-
-"Who is more likely to be late?",
-
-"What is your partner's love language?",
-
-"Who makes the first move?",
-
-"What is your partner's favorite music?",
-
-"Who is more protective?",
-
-"What is your partner's biggest weakness?",
-
-"Who makes better decisions?",
-
-"Where would your partner want to live?",
-
-"Who is more talkative?",
-
-"What is your partner's favorite dessert?",
-
-"Who cries during movies?",
-
-"What is your partner's dream car?",
-
-"Who is more organized?",
-
-"What is your partner's favorite holiday?",
-
-"Who forgives quickly?",
-
-"What does your partner value most?",
-
-"Who is more playful?",
-
-"What is your partner's biggest goal?",
-
-"Who wakes up earlier?",
-
-"What is your partner's favorite activity?",
-
-"Who is more competitive?",
-
-"What makes your partner angry?",
-
-"Who initiates hugs?",
-
-"What is your partner's perfect weekend?",
-
-"Who is more confident?",
-
-"What does your partner love most about you?",
-
-"Love or money?"
-
+{question:"When you imagine your happiest future, what role do you want your partner to play in it?",options:["My biggest supporter","My best friend and companion","My safe place","The person I build everything with"]},
+{question:"What makes you feel most deeply loved?",options:["Being understood without explaining","Physical affection and closeness","Consistent effort every day","Hearing reassuring words"]},
+{question:"When you are emotionally hurt, what do you secretly want from your partner?",options:["To hold me close","To listen without judging","To reassure me that everything will be okay","To understand what I cannot say"]},
+{question:"What scares you most about falling deeply in love?",options:["Losing the person I love","Being misunderstood","Getting emotionally hurt","Loving more than I am loved"]},
+{question:"If your partner suddenly became distant, what would hurt you most?",options:["Not knowing what happened","Feeling unwanted","Feeling like someone else replaced me","Missing the closeness we shared"]},
+{question:"Which kind of intimacy means the most to you?",options:["Talking for hours about everything","Holding hands and cuddling","Sharing fears and secrets","Being comfortable together in silence"]},
+{question:"What would make you feel most secure in a relationship?",options:["Complete loyalty","Open and honest communication","Consistent affection","Knowing they choose me every day"]},
+{question:"If your partner were going through a very difficult phase, what would you naturally do?",options:["Stay beside them quietly","Help them solve the problem","Give them emotional support","Do whatever they need without being asked"]},
+{question:"What does being faithful mean to you?",options:["Never being unfaithful","Having clear boundaries with others","Protecting your partner's trust","Choosing your relationship even when nobody is watching"]},
+{question:"Which would hurt you more?",options:["Being lied to","Emotional distance","Broken trust","Feeling taken for granted"]},
+{question:"When you say 'I love you,' what does it mean most deeply to you?",options:["I care deeply about you","I choose you","I want a future with you","You have become a part of me"]},
+{question:"What kind of reassurance would mean the most to you?",options:["I'm not going anywhere","You're enough for me","I still choose you","We'll figure everything out together"]},
+{question:"If you could know one thing about your partner's heart, what would you choose?",options:["How deeply they love me","What they are most afraid of losing","What future they imagine with me","What they never tell anyone"]},
+{question:"What makes a relationship feel like home?",options:["Feeling completely accepted","Feeling emotionally safe","Being able to be completely yourself","Knowing someone will stay through difficult days"]},
+{question:"If you strongly disagreed about something important, what should happen first?",options:["Give each other some time","Talk calmly about it","Try to understand each other's perspective","Find a compromise together"]},
+{question:"What would you never want your partner to doubt?",options:["My love","My loyalty","My commitment","Their importance in my life"]},
+{question:"Which moment feels most romantic to you?",options:["A passionate kiss","Falling asleep in each other's arms","Looking into each other's eyes without speaking","Hearing 'I choose you' during a difficult moment"]},
+{question:"If your partner couldn't give you something you needed emotionally, what would you do?",options:["Explain my feelings clearly","Try to understand their side","Give them time to improve","Find a way for us to meet halfway"]},
+{question:"What matters most for love to last for many years?",options:["Strong chemistry","Complete trust","Being best friends","Choosing each other through every change"]},
+{question:"When you imagine growing old together, what matters most?",options:["Still being attracted to each other","Still laughing together","Still being emotionally close","Still feeling like best friends"]},
+{question:"If your partner had a dream that required a big sacrifice from you, what would you do?",options:["Support them completely","Find a compromise","Make the sacrifice if it truly mattered","Help them find another way"]},
+{question:"What does emotional loyalty mean to you?",options:["Sharing your deepest feelings with your partner","Not seeking emotional intimacy elsewhere","Protecting your relationship during difficult times","Making your partner your safest emotional place"]},
+{question:"Which sentence would mean the most coming from your partner?",options:["I'm proud of you","I understand you","I'm always on your side","You never have to face anything alone"]},
+{question:"When jealousy appears in a relationship, what should happen?",options:["Talk honestly about it","Reassure each other","Understand where the feeling comes from","Never let jealousy control the relationship"]},
+{question:"What could make you fall even more deeply in love with someone you already love?",options:["Watching them grow as a person","Seeing how kindly they treat others","Discovering new sides of them","Realizing they still choose you after everything"]},
+{question:"Which kind of touch feels most emotionally intimate?",options:["Holding hands","A gentle forehead kiss","A long, comforting hug","Being held without having to ask"]},
+{question:"If your partner struggled to express their feelings, how would you respond?",options:["Give them patience","Ask them gently","Pay attention to their actions","Make sure they know they are safe with me"]},
+{question:"What should never disappear even after years together?",options:["Affection","Curiosity about each other","Respect","The feeling of being chosen"]},
+{question:"If you had to choose, which relationship would you prefer?",options:["A peaceful relationship with very few problems","A real relationship that grows through problems","A relationship with very strong love","A relationship where both people keep fighting for each other"]},
+{question:"What is the deepest form of trust?",options:["Knowing they won't lie","Feeling safe enough to show your weaknesses","Knowing they won't leave during hard times","Being able to completely be yourself"]},
+{question:"If your partner changed significantly over the years, what would you hope remained unchanged?",options:["Their love","Their values","Their loyalty","The way they make me feel"]},
+{question:"What would you rather receive from your partner?",options:["One unforgettable romantic gesture","Small loving gestures every day","Constant emotional support","A lifelong commitment shown through actions"]},
+{question:"After an argument, what matters most to you?",options:["Knowing who was right","Hearing an apology","Understanding what caused the problem","Making sure the same hurt doesn't happen again"]},
+{question:"What does 'forever' mean to you?",options:["Staying together physically","Choosing each other repeatedly","Growing together through every stage of life","Loving each other even when life changes"]},
+{question:"If your partner could read one secret thought from your heart, what would you want them to discover?",options:["How much I need them","How deeply I love them","How often I imagine our future","How afraid I am of losing them"]},
+{question:"Which apology feels most genuine?",options:["A simple 'I'm sorry'","An explanation of what went wrong","Taking responsibility and changing","Understanding how their actions made me feel"]},
+{question:"What would make you feel special even after many years together?",options:["Still receiving surprise kisses","Still being taken on dates","Still hearing loving words","Still being looked at like I'm the only person in the room"]},
+{question:"If life became extremely difficult for both of you, what would keep you together?",options:["Love","Commitment","Friendship","The decision to face everything as a team"]},
+{question:"Which 'I miss you' would touch your heart the most?",options:["I miss talking to you","I miss your hugs","I miss having you beside me","Everything feels different when you're not here"]},
+{question:"What would you want your partner to understand without you having to explain it?",options:["My insecurities","My silence","My emotional needs","The parts of me I hide from everyone else"]},
+{question:"What feels more intimate than physical closeness?",options:["Knowing each other's secrets","Feeling safe enough to cry together","Understanding each other's silence","Knowing each other's hearts completely"]},
+{question:"If you could make one promise to your partner forever, which would you choose?",options:["I will always be honest","I will always respect you","I will always stand beside you","I will keep choosing you even when life isn't easy"]},
+{question:"What would make you feel that your partner truly knows you?",options:["They remember the little things","They understand my moods","They know my deepest fears","They know what I need even when I can't ask"]},
+{question:"Which future feels most romantic to you?",options:["Travelling the world together","Building a beautiful home","Growing financially and personally together","Growing old while still being best friends"]},
+{question:"If your partner made a mistake that deeply hurt you, what would determine whether you forgive them?",options:["How sincere their apology is","Whether they are completely honest","Whether they genuinely change","Whether they understand the pain they caused"]},
+{question:"What is the most beautiful part of being deeply loved?",options:["Having someone to celebrate life with","Having someone to come home to","Having someone who sees every side of you","Being completely known and still completely loved"]},
+{question:"If you could preserve one feeling between you forever, which would you choose?",options:["Excitement","Passion","Comfort","The feeling that we are each other's person"]},
+{question:"What would you want your partner to remember about your love story years from now?",options:["How beautifully it started","How many memories we created","How much we overcame together","How we never stopped choosing each other"]},
+{question:"At the deepest level, what do you want your relationship to give you?",options:["Happiness","Security","Companionship","A love where both people can completely be themselves"]},
+{question:"If you had to describe the person you love in one sentence, which feels closest to your heart?",options:["You are the person I love.","You are my favorite person.","You are the person I want beside me.","You are the person I want to choose, understand, protect and love for the rest of my life. ❤️"]}
 ];
 
+let currentUser=null, roomCode=null, playerRole=null, playerName=null;
+let currentQuestion=0, answers=[], unsubscribeRoom=null, resultShown=false, answerLocked=false;
 
-const choices = [
+function showPage(id){document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));document.getElementById(id).classList.add("active");}
+function showError(msg){const e=document.getElementById("homeError");e.textContent=msg;e.style.display="block";}
+function hideError(){const e=document.getElementById("homeError");e.textContent="";e.style.display="none";}
 
-"Strongly Agree",
-
-"Agree",
-
-"Neutral",
-
-"Disagree",
-
-"Strongly Disagree"
-
-];
-
-
-/* =========================
-   VARIABLES
-========================= */
-
-let name = "";
-
-let room = "";
-
-let creator = false;
-
-let q = 0;
-
-let answers = {};
-
-let timer = null;
-
-
-/* =========================
-   SHORT FUNCTION
-========================= */
-
-const $ = id =>
-document.getElementById(id);
-
-
-/* =========================
-   PAGE CHANGE
-========================= */
-
-function page(id){
-
-document
-.querySelectorAll(".box")
-.forEach(box =>
-box.classList.add("hide")
-);
-
-$(id).classList.remove("hide");
-
+async function initializeAuthentication(){
+    try{const result=await signInAnonymously(auth);currentUser=result.user;}
+    catch(error){console.error(error);showError("Unable to connect to Firebase. Please check that Anonymous Authentication is enabled.");}
 }
 
+function generateRoomCode(){return Math.floor(100000+Math.random()*900000).toString();}
 
-/* =========================
-   CREATE 6 DIGIT CODE
-========================= */
-
-function makeCode(){
-
-return Math.floor(
-100000 + Math.random() * 900000
-).toString();
-
+async function getUniqueRoomCode(){
+    for(let attempt=0;attempt<10;attempt++){
+        const code=generateRoomCode();
+        const snapshot=await getDoc(doc(db,"coupleRooms",code));
+        if(!snapshot.exists()) return code;
+    }
+    throw new Error("Unable to create a unique room. Please try again.");
 }
 
-
-/* =========================
-   JOIN BOX
-========================= */
-
-$("showJoin").onclick = function(){
-
-$("joinBox").classList.toggle("hide");
-
-$("msg").textContent = "";
-
-};
-
-
-/* =========================
-   CREATE QUIZ
-========================= */
-
-$("create").onclick = async function(){
-
-$("msg").textContent = "";
-
-$("success").textContent = "";
-
-name = $("name").value.trim();
-
-if(!name){
-
-$("msg").textContent =
-"Please enter your name.";
-
-return;
-
+async function createRoom(){
+    hideError();
+    if(!currentUser){showError("Connecting to Firebase. Please wait a moment and try again.");return;}
+    const name=document.getElementById("nameInput").value.trim();
+    if(!name){showError("Please enter your name first.");return;}
+    try{
+        document.getElementById("createBtn").disabled=true;
+        playerName=name; roomCode=await getUniqueRoomCode(); playerRole="creator";
+        await setDoc(doc(db,"coupleRooms",roomCode),{
+            creator:{name:playerName,uid:currentUser.uid,answers:[],submitted:false},
+            partner:null,createdAt:Date.now()
+        });
+        document.getElementById("displayRoomCode").textContent=roomCode;
+        showPage("waitingPage"); listenToRoom();
+    }catch(error){console.error(error);showError("Could not create the room. Please check your Firebase Firestore settings.");}
+    finally{document.getElementById("createBtn").disabled=false;}
 }
 
-
-room = makeCode();
-
-creator = true;
-
-
-const { data, error } = await supabase
-
-.from("rooms")
-
-.insert({
-
-code: room,
-
-creator_name: name,
-
-creator_answers: {},
-
-partner_name: null,
-
-partner_answers: null
-
-})
-
-.select();
-
-
-if(error){
-
-$("msg").textContent =
-"Supabase Error: " + error.message;
-
-return;
-
+async function joinRoom(){
+    hideError();
+    if(!currentUser){showError("Connecting to Firebase. Please wait a moment and try again.");return;}
+    const name=document.getElementById("nameInput").value.trim();
+    const enteredCode=document.getElementById("roomInput").value.trim();
+    if(!name){showError("Please enter your name first.");return;}
+    if(!/^\d{6}$/.test(enteredCode)){showError("Please enter a valid 6-digit room code.");return;}
+    try{
+        document.getElementById("joinBtn").disabled=true;
+        const roomRef=doc(db,"coupleRooms",enteredCode);
+        const snapshot=await getDoc(roomRef);
+        if(!snapshot.exists()){showError("Room not found. Please check the code.");return;}
+        const roomData=snapshot.data();
+        if(roomData.creator&&roomData.creator.uid===currentUser.uid){showError("You already created this room. Share the code with your partner.");return;}
+        if(roomData.partner){showError("This room already has two players.");return;}
+        roomCode=enteredCode; playerRole="partner"; playerName=name;
+        await updateDoc(roomRef,{partner:{name:playerName,uid:currentUser.uid,answers:[],submitted:false}});
+        showPage("quizPage");
+        document.getElementById("quizRoom").textContent="Room: "+roomCode;
+        listenToRoom(); startQuiz();
+    }catch(error){console.error(error);showError("Could not join the room. Please check your Firebase Firestore rules.");}
+    finally{document.getElementById("joinBtn").disabled=false;}
 }
 
-
-$("roomCode").textContent = room;
-
-$("waitStatus").textContent =
-"Waiting for your partner to join...";
-
-page("wait");
-
-watchRoom();
-
-};
-
-
-/* =========================
-   JOIN QUIZ
-========================= */
-
-$("join").onclick = async function(){
-
-$("msg").textContent = "";
-
-name = $("name").value.trim();
-
-room = $("code").value.trim();
-
-
-if(!name){
-
-$("msg").textContent =
-"Please enter your name.";
-
-return;
-
+function listenToRoom(){
+    if(unsubscribeRoom) unsubscribeRoom();
+    const roomRef=doc(db,"coupleRooms",roomCode);
+    unsubscribeRoom=onSnapshot(roomRef,snapshot=>{
+        if(!snapshot.exists()) return;
+        const roomData=snapshot.data();
+        updatePartnerStatus(roomData);
+        if(playerRole==="creator"&&roomData.partner&&document.getElementById("waitingPage").classList.contains("active")){
+            setTimeout(()=>{showPage("quizPage");document.getElementById("quizRoom").textContent="Room: "+roomCode;startQuiz();},700);
+        }
+        if(roomData.creator&&roomData.partner&&roomData.creator.submitted===true&&roomData.partner.submitted===true&&!resultShown){
+            resultShown=true;
+            setTimeout(()=>showResults(roomData),500);
+        }
+    },error=>{
+        console.error("Room listener error:",error);
+        if(document.getElementById("homePage").classList.contains("active")) showError("Firebase connection error. Please check your Firestore Rules.");
+    });
 }
 
-
-if(room.length !== 6){
-
-$("msg").textContent =
-"Please enter the 6-digit code.";
-
-return;
-
+function updatePartnerStatus(roomData){
+    const status=document.getElementById("partnerStatus"); if(!status)return;
+    let partner=playerRole==="creator"?roomData.partner:roomData.creator;
+    if(!partner){status.textContent="⏳ Waiting for your partner to join...";return;}
+    if(partner.submitted) status.textContent="💚 Your partner has finished! Finish yours to see the result.";
+    else status.textContent="💕 "+partner.name+" is answering the quiz too...";
 }
 
-
-const { data, error } = await supabase
-
-.from("rooms")
-
-.select("*")
-
-.eq("code", room)
-
-.maybeSingle();
-
-
-if(error){
-
-$("msg").textContent =
-"Supabase Error: " + error.message;
-
-return;
-
-}
-
-
-if(!data){
-
-$("msg").textContent =
-"Code not found. Please check the code.";
-
-return;
-
-}
-
-
-if(data.partner_name){
-
-$("msg").textContent =
-"This quiz already has two players.";
-
-return;
-
-}
-
-
-/* Add partner */
-
-const result = await supabase
-
-.from("rooms")
-
-.update({
-
-partner_name: name,
-
-partner_answers: {}
-
-})
-
-.eq("code", room);
-
-
-if(result.error){
-
-$("msg").textContent =
-"Supabase Error: " +
-result.error.message;
-
-return;
-
-}
-
-
-creator = false;
-
-startQuiz();
-
-watchRoom();
-
-};
-
-
-/* =========================
-   WATCH ROOM
-========================= */
-
-function watchRoom(){
-
-clearInterval(timer);
-
-
-timer = setInterval(
-async function(){
-
-const { data, error } = await supabase
-
-.from("rooms")
-
-.select("*")
-
-.eq("code", room)
-
-.maybeSingle();
-
-
-if(error){
-
-return;
-
-}
-
-
-if(!data){
-
-return;
-
-}
-
-
-/* Creator sees partner */
-
-if(
-creator &&
-data.partner_name &&
-$("wait").classList.contains("hide") === false
-){
-
-$("waitStatus").textContent =
-"Your partner joined! Starting quiz...";
-
-setTimeout(function(){
-
-startQuiz();
-
-},800);
-
-return;
-
-}
-
-
-/* Check both answers */
-
-if(
-data.creator_answers &&
-data.partner_answers
-){
-
-const creatorCount =
-Object.keys(data.creator_answers).length;
-
-const partnerCount =
-Object.keys(data.partner_answers).length;
-
-
-if(
-creatorCount >= 50 &&
-partnerCount >= 50
-){
-
-showResult(data);
-
-}
-
-}
-
-},
-2000
-);
-
-}
-
-
-/* =========================
-   START QUIZ
-========================= */
-
-function startQuiz(){
-
-clearInterval(timer);
-
-page("quiz");
-
-q = 0;
-
-answers = {};
-
-showQuestion();
-
-}
-
-
-/* =========================
-   SHOW QUESTION
-========================= */
+function startQuiz(){currentQuestion=0;answers=[];resultShown=false;answerLocked=false;showQuestion();}
 
 function showQuestion(){
-
-$("num").textContent =
-q + 1;
-
-$("question").textContent =
-questions[q];
-
-$("options").innerHTML = "";
-
-
-choices.forEach(function(choice){
-
-const button =
-document.createElement("button");
-
-button.textContent = choice;
-
-button.className = "option";
-
-
-if(answers[q] === choice){
-
-button.classList.add("selected");
-
+    if(currentQuestion>=questions.length){submitAnswers();return;}
+    answerLocked=false;
+    const question=questions[currentQuestion];
+    document.getElementById("questionNumber").textContent="Question "+(currentQuestion+1)+" of "+questions.length;
+    document.getElementById("progressText").textContent=(currentQuestion+1)+" / "+questions.length;
+    document.getElementById("questionText").textContent=question.question;
+    document.getElementById("progressBar").style.width=((currentQuestion/questions.length)*100)+"%";
+    const container=document.getElementById("optionsContainer"); container.innerHTML="";
+    question.options.forEach((text,index)=>{
+        const option=document.createElement("div");
+        option.className="option"; option.textContent=text;
+        option.addEventListener("click",()=>selectAnswer(index));
+        container.appendChild(option);
+    });
 }
 
+function selectAnswer(index){
+    if(answerLocked)return;
+    answerLocked=true;
+    document.querySelectorAll(".option").forEach((option,i)=>{
+        option.classList.add("disabled");
+        if(i===index)option.classList.add("selected");
+    });
+    answers.push(index);
+    setTimeout(()=>{currentQuestion++;showQuestion();},250);
+}
 
-button.onclick = function(){
+async function submitAnswers(){
+    try{
+        document.getElementById("progressBar").style.width="100%";
+        const playerUpdate={};
+        playerUpdate[playerRole+".answers"]=answers;
+        playerUpdate[playerRole+".submitted"]=true;
+        await updateDoc(doc(db,"coupleRooms",roomCode),playerUpdate);
+        showPage("submittedPage");
+    }catch(error){console.error(error);alert("There was a problem saving your answers. Please check your internet connection and try again.");}
+}
 
-answers[q] = choice;
+function showResults(roomData){
+    if(!roomData.creator||!roomData.partner)return;
+    const creatorAnswers=roomData.creator.answers||[];
+    const partnerAnswers=roomData.partner.answers||[];
+    let matches=0;
+    for(let i=0;i<questions.length;i++){
+        if(creatorAnswers[i]!==undefined&&partnerAnswers[i]!==undefined&&creatorAnswers[i]===partnerAnswers[i])matches++;
+    }
+    const percentage=Math.round((matches/questions.length)*100);
+    document.getElementById("resultNames").textContent=roomData.creator.name+" ❤️ "+roomData.partner.name;
+    document.getElementById("scoreNumber").textContent=percentage+"%";
+    document.getElementById("matchSummary").textContent=matches+" out of "+questions.length+" answers matched";
+    let message="";
+    if(percentage>=85)message="💖 Incredibly aligned! You two seem to understand each other's hearts on a very deep level. Your answers show beautiful emotional similarities.";
+    else if(percentage>=70)message="💕 A beautiful connection! You share many important ways of thinking and feeling. There is a strong emotional understanding between you.";
+    else if(percentage>=55)message="💗 You understand each other in many meaningful ways. Your differences can also make your relationship interesting and help you grow together.";
+    else if(percentage>=40)message="🌷 You have both similarities and differences. Sometimes the most beautiful relationships come from learning how to understand a heart that thinks differently.";
+    else message="💞 Your answers are quite different, but that doesn't mean your love is weak. Compatibility is also about respecting, learning and choosing each other despite differences.";
+    document.getElementById("resultMessage").textContent=message;
+    createAnswerDetails(creatorAnswers,partnerAnswers,roomData.creator.name,roomData.partner.name);
+    showPage("resultPage");
+}
 
+function createAnswerDetails(creatorAnswers,partnerAnswers,creatorName,partnerName){
+    const container=document.getElementById("answerDetails"); container.innerHTML="";
+    questions.forEach((question,index)=>{
+        const creatorIndex=creatorAnswers[index],partnerIndex=partnerAnswers[index];
+        const matched=creatorIndex===partnerIndex;
+        const box=document.createElement("div");
+        box.className="answer-detail "+(matched?"match":"no-match");
+        const title=document.createElement("div");
+        title.className="answer-q"; title.textContent=(index+1)+". "+question.question; box.appendChild(title);
+        const cr=document.createElement("div"); cr.className="answer-row";
+        cr.textContent="💗 "+creatorName+": "+(question.options[creatorIndex]||"No answer"); box.appendChild(cr);
+        const pr=document.createElement("div"); pr.className="answer-row";
+        pr.textContent="💞 "+partnerName+": "+(question.options[partnerIndex]||"No answer"); box.appendChild(pr);
+        const label=document.createElement("div"); label.className="match-label "+(matched?"yes":"no");
+        label.textContent=matched?"✓ You both chose the same answer":"♡ You chose different answers"; box.appendChild(label);
+        container.appendChild(box);
+    });
+}
 
-document
-.querySelectorAll(".option")
-.forEach(function(btn){
-
-btn.classList.remove("selected");
-
+document.getElementById("copyBtn").addEventListener("click",async()=>{
+    try{
+        await navigator.clipboard.writeText(roomCode);
+        document.getElementById("copyBtn").textContent="✓ Room Code Copied!";
+        setTimeout(()=>document.getElementById("copyBtn").textContent="📋 Copy Room Code",1800);
+    }catch(error){alert("Your room code is: "+roomCode);}
 });
 
-
-button.classList.add("selected");
-
-};
-
-
-$("options").appendChild(button);
-
+document.getElementById("backHomeBtn").addEventListener("click",()=>{
+    if(unsubscribeRoom){unsubscribeRoom();unsubscribeRoom=null;}
+    roomCode=null;playerRole=null;playerName=null;answers=[];currentQuestion=0;showPage("homePage");
 });
 
-
-$("next").textContent =
-q === 49 ? "Submit ❤️" : "Next";
-
-}
-
-
-/* =========================
-   NEXT / SUBMIT
-========================= */
-
-$("next").onclick = async function(){
-
-if(answers[q] === undefined){
-
-alert("Please select an answer.");
-
-return;
-
-}
-
-
-/* Next question */
-
-if(q < 49){
-
-q++;
-
-showQuestion();
-
-return;
-
-}
-
-
-/* Save answers */
-
-let update = {};
-
-
-if(creator){
-
-update.creator_answers =
-answers;
-
-}else{
-
-update.partner_answers =
-answers;
-
-}
-
-
-const { error } = await supabase
-
-.from("rooms")
-
-.update(update)
-
-.eq("code", room);
-
-
-if(error){
-
-alert(
-"Could not save answers: " +
-error.message
-);
-
-return;
-
-}
-
-
-page("submitted");
-
-watchRoom();
-
-};
-
-
-/* =========================
-   SHOW RESULT
-========================= */
-
-function showResult(data){
-
-clearInterval(timer);
-
-
-let mine;
-
-let partner;
-
-
-if(creator){
-
-mine = data.creator_answers;
-
-partner = data.partner_answers;
-
-}else{
-
-mine = data.partner_answers;
-
-partner = data.creator_answers;
-
-}
-
-
-let match = 0;
-
-
-for(let i = 0; i < 50; i++){
-
-if(mine[i] === partner[i]){
-
-match++;
-
-}
-
-}
-
-
-const percent =
-Math.round((match / 50) * 100);
-
-
-$("score").textContent =
-percent;
-
-
-if(percent >= 90){
-
-$("title").textContent =
-"Perfect Match! 💕";
-
-$("resultText").textContent =
-"You two understand each other amazingly well!";
-
-}
-
-else if(percent >= 75){
-
-$("title").textContent =
-"Amazing Couple! ❤️";
-
-$("resultText").textContent =
-"You know each other really well!";
-
-}
-
-else if(percent >= 50){
-
-$("title").textContent =
-"Great Connection! 💗";
-
-$("resultText").textContent =
-"You have a beautiful connection!";
-
-}
-
-else{
-
-$("title").textContent =
-"More Discoveries Ahead! 😊";
-
-$("resultText").textContent =
-"Keep learning more about each other!";
-
-}
-
-
-page("result");
-
-}
-
-
-/* =========================
-   CONNECTION TEST
-========================= */
-
-console.log(
-"Couple Quiz Supabase connected"
-);
+document.getElementById("playAgainBtn").addEventListener("click",()=>{
+    if(unsubscribeRoom){unsubscribeRoom();unsubscribeRoom=null;}
+    roomCode=null;playerRole=null;playerName=null;answers=[];currentQuestion=0;resultShown=false;
+    document.getElementById("nameInput").value="";
+    document.getElementById("roomInput").value="";
+    showPage("homePage");
+});
+
+document.getElementById("createBtn").addEventListener("click",createRoom);
+document.getElementById("joinBtn").addEventListener("click",joinRoom);
+
+document.getElementById("roomInput").addEventListener("input",function(){
+    this.value=this.value.replace(/\D/g,"").slice(0,6);
+});
+
+document.getElementById("nameInput").addEventListener("keydown",event=>{
+    if(event.key==="Enter")createRoom();
+});
+
+document.getElementById("roomInput").addEventListener("keydown",event=>{
+    if(event.key==="Enter")joinRoom();
+});
+
+initializeAuthentication();
 
 </script>
-
 </body>
 </html>
